@@ -1,0 +1,93 @@
+- name: Base Centrunk Install Prelim (Root Required)
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    # add administrative user
+    - name: Add Administrative Centrunk User
+      ansible.builtin.user:
+        group: root
+        name: dvmhost
+        create_home: no
+        groups:
+          - root
+          - dialout
+        append: yes
+        password: $6$mi3hgQhRQbOQ$ERDwcqWCBJhRp.lR0jPRlflIA0Hw/IiIIMpjOwPpGcnYvJdbHK16pmUr7Vy6xPvpGJwy5ddVyn5.rT7Is3RJZ0
+      # add administrative user to sudoers
+    - name: Add Administrative User to Sudoers
+      community.general.system.sudoers:
+        name: centrunk_agent_permissions
+        state: present
+        user: dvmhost
+        runas: root
+        commands: ALL
+
+- name: Base Centrunk Install
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    
+    - name: Check Environment
+      stat:
+        path: /opt/dvm
+      register: dvm_installed
+
+    # install python3, python3-pip, and git
+    - name: Install Centrunk Dependencies
+      ansible.builtin.apt:
+        pkg:
+          - stm32flash
+          - python3
+          - python3-pip
+          - git
+          - wget
+          - unzip
+  
+    # download and install dvmhost
+    - name: Clone DVM Host
+      ansible.builtin.git:
+        repo: https://github.com/DVMProject/dvmhost.git
+        dest: /opt/dvm
+        version: master
+      when: not dvm_installed.stat.isdir
+    # Build DVM Host
+    - name: Build DVMhost
+      ansible.builtin.shell:
+        cmd: "make"
+        chdir: /opt/dvm/ 
+      when: not dvm_installed.stat.isdir
+
+- name: Enroll in Centrunk System Management
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    # pull in the systemctl file
+    - name: Clone Systemctl file from Git.
+      ansible.builtin.git:
+        repo: https://github.com/Centrunk/centrunk-base-config.git
+        dest: /opt/centrunk/config
+        version: master
+    - name: Copy file to Systemd directory.
+      ansible.builtin.copy:
+        src: /opt/centrunk/config/p25.service
+        dest: /etc/systemd/system/centrunk.service
+        owner: root
+        group: root
+        mode: '0644'
+        remote_src: yes
+    
+    # reload the daemon
+    - name: Reload Systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    # start centrunk service 
+    - name: Enable Centrunk Service
+      ansible.builtin.systemd:
+        name: centrunk
+        enabled: yes
+        masked: no
+    - 
