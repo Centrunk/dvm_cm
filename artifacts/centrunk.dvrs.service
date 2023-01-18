@@ -1,0 +1,12 @@
+[Unit]
+Description=Centrunk P25 TRS Service (DVRS)
+After=syslog.target zerotier-one.service network.target
+
+[Service]
+User=root
+Type=forking
+ExecStart=/opt/dvm/dvmhost -c /opt/dvm/configDVRS1.yml
+Restart=on-abnormal
+
+[Install]
+WantedBy=multi-user.target

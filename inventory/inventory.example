@@ -1,0 +1,107 @@
+ctrs:
+    hosts:
+        10.0.0.1:
+          vars:
+            type: VOC
+            iden_channel: 3
+            voice_channel: 120
+            control_channel: 120
+            super_group: 911
+            wacn: dee00
+            rfss: 1
+            site: B
+            nac: 13B
+            sys: 13B
+            fne_node: 12001
+            modem_port: /dev/ttyUSB1
+            fne_identity: 1-B VOC
+            callsign: WRUP970
+            rcon_password: "ads(LKkjhf67898!"
+        10.0.0.2:
+          vars:
+            type: COMBO
+            iden_channel: 3
+            voice_channel: 918
+            control_channel: 120
+            super_group: 911
+            wacn: dee00
+            rfss: 1
+            site: B
+            nac: 13B
+            sys: 13B
+            fne_node_cc: 12001
+            modem_port_cc: /dev/ttyUSB1
+            fne_identity_cc: 1-B CC
+            fne_node_vc: 12002
+            modem_port_vc: /dev/ttyUSB2
+            fne_identity_vc: 1-B VC
+            callsign: WRUP970
+            rcon_password: "ads(LKkjhf67898!"
+        10.0.0.3:
+          vars:
+            type: VC
+            iden_channel: 3
+            voice_channel: 120
+            control_channel: 120
+            super_group: 911
+            wacn: dee00
+            rfss: 1
+            site: B
+            nac: 13B
+            sys: 13B
+            fne_node_vc: 12002
+            modem_port_vc: /dev/ttyUSB2
+            fne_identity_vc: 1-B VC
+            callsign: WRUP970
+            rcon_password: "ads(LKkjhf67898!"
+        10.0.0.4:
+          vars:
+            type: CC
+            iden_channel: 3
+            voice_channel: 120
+            control_channel: 120
+            super_group: 911
+            wacn: dee00
+            rfss: 1
+            site: B
+            nac: 13B
+            sys: 13B
+            fne_node_cc: 12002
+            modem_port_cc: /dev/ttyUSB1
+            fne_identity_cc: 1-B CC
+            callsign: WRUP970
+            rcon_password: "ads(LKkjhf67898!"
+        10.0.0.5:
+          vars:
+            type: CONV
+            iden_channel: 3
+            voice_channel: 120
+            control_channel: 120
+            super_group: 911
+            wacn: dee00
+            rfss: 1
+            site: B
+            nac: 13B
+            sys: 13B
+            fne_node: 12002
+            modem_port: /dev/ttyUSB1
+            fne_identity: 1-B CONV
+            callsign: WRUP970
+            rcon_password: "ads(LKkjhf67898!"
+        10.0.0.5:
+          vars:
+            type: DVRS
+            iden_channel: 3
+            voice_channel: 120
+            control_channel: 120
+            super_group: 911
+            wacn: dee00
+            rfss: 1
+            site: B
+            nac: 13B
+            sys: 13B
+            fne_node: 12002
+            modem_port: /dev/ttyUSB1
+            fne_identity: 1-B DVRS
+            callsign: WRUP970
+            rcon_password: "ads(LKkjhf67898!"
