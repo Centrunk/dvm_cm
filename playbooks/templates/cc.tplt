@@ -11,14 +11,14 @@ network:
     allowDiagnosticTransfer: true
     debug: false
     enable: true
-    id: {{ fne_node_cc }}
+    id: {{ hostvars[inventory_hostname].vars.fne_node_cc }}
     jitter: 500
     password: CENTRUNK
     port: 62030
     rconAddress: 127.0.0.1
     rconDebug: false
     rconEnable: true
-    rconPassword: {{ rcon_password }}
+    rconPassword: {{ hostvars[inventory_hostname].vars.rcon_password }}
     rconPort: 9991
     slot1: true
     slot2: false
@@ -55,18 +55,18 @@ protocols:
         voiceOnControl: false
 system:
     config:
-        channelId: {{ iden_channel }}
-        channelNo: {{ control_channel }}
-        nac: {{ nac }}
-        netId: {{ wacn }}
-        pSuperGroup: {{ super_group }}
-        rfssId: {{ rfss }}
-        siteId: {{ site }}
-        sysId: {{ sys }}
+        channelId: {{ hostvars[inventory_hostname].vars.iden_channel }}
+        channelNo: {{ hostvars[inventory_hostname].vars.control_channel }}
+        nac: {{ hostvars[inventory_hostname].vars.nac }}
+        netId: {{ hostvars[inventory_hostname].vars.wacn }}
+        pSuperGroup: {{ hostvars[inventory_hostname].vars.super_group }}
+        rfssId: {{ hostvars[inventory_hostname].vars.rfss }}
+        siteId: {{ hostvars[inventory_hostname].vars.site }}
+        sysId: {{ hostvars[inventory_hostname].vars.sys }}
         voiceChNo:
-            - {{ voice_channel }}
+            - {{ hostvars[inventory_hostname].vars.voice_channel }}
     cwId:
-        callsign: {{ callsign }}
+        callsign: {{ hostvars[inventory_hostname].vars.callsign }}
         enable: true
         time: 15
     duplex: true
@@ -74,7 +74,7 @@ system:
     iden_table:
         file: /opt/dvm/iden_table.dat
         time: 30
-    identity: {{ fne_identity_cc }}
+    identity: {{ hostvars[inventory_hostname].vars.fne_identity_cc }}
     info:
         height: 1
         latitude: 31.450535
@@ -116,7 +116,7 @@ system:
         protocol:
             type: uart
             uart:
-                port: {{ modem_port_cc }}
+                port: {{ hostvars[inventory_hostname].vars.modem_port_cc }}
                 speed: 115200
             udp:
                 endpointAddress: 0.0.0.0
