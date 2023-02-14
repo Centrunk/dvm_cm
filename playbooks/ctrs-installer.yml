@@ -43,9 +43,6 @@
           - wget
           - unzip
           - inotify-tools
-    - name: Install Centrunk Python Dependencies
-      ansible.builtin.pip:
-        name: boto3
     # download and install dvmhost
     - name: Clone DVM Host
       ansible.builtin.git:
