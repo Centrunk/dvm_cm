@@ -1,5 +1,5 @@
 
-- name: Dependency install and initial cloneout of code.
+- name: "[PRE] Initial Environment Setup"
   hosts: all
   become: yes
   become_user: root
@@ -20,14 +20,14 @@
           - unzip
           - inotify-tools
     # download and install dvmhost
-    - name: Clone DVM Host
+    - name: Get DVMHost Code
       ansible.builtin.git:
         repo: https://github.com/DVMProject/dvmhost.git
         dest: /opt/dvm
         version: master
       when: not dvm_installed.stat.exists
 
-- name: Initial CTRS dvmhost setup.
+- name: Initial CTRS CCM Setup
   hosts: all
   become: yes
   become_user: root
@@ -206,7 +206,7 @@
 
 
 # start centrunk service
-- name: Enable Centrunk Service(s)
+- name: Enable Centrunk CCM Service(s)
   hosts: all
   become: yes
   become_user: root
