@@ -4,10 +4,6 @@
   become: yes
   become_user: root
   tasks:
-    - name: Check Environment
-      ansible.builtin.stat:
-        path: /opt/dvm
-      register: dvm_installed
     # install python3, python3-pip, and git
     - name: Install Centrunk Dependencies
       ansible.builtin.apt:
@@ -23,9 +19,8 @@
     - name: Get DVMHost Code
       ansible.builtin.git:
         repo: https://github.com/DVMProject/dvmhost.git
-        dest: /opt/dvm
+        dest: /opt/centrunk/dvm
         version: master
-      when: not dvm_installed.stat.exists
 
 - name: Initial CTRS CCM Setup
   hosts: all
@@ -43,39 +38,43 @@
     # copy the dvmhost binary
     - name: Move in dvmhost for x86_64
       ansible.builtin.copy:
-        src: /home/lastation4/ctrs-utils/bin/x86_64/dvmhost
-        dest: /opt/dvm/dvmhost
+        src: /opt/centrunk/util/bin/x86_64/dvmhost
+        dest: /opt/centrunk/dvm/dvmhost
         owner: root
         group: root
         mode: '0644'
+        remote_src: yes
       when: ansible_architecture is search("x86_64")
     - name: Move in dvmcmd for x86_64
       ansible.builtin.copy:
-        src: /home/lastation4/ctrs-utils/bin/x86_64/dvmcmd
+        src: /opt/centrunk/util/bin/x86_64/dvmcmd
         dest: /opt/dvm/dvmcmd
         owner: root
         group: root
         mode: '0644'
+        remote_src: yes
       when: ansible_architecture is search("x86_64")
 
     - name: Move in Binaries for arm
       ansible.builtin.copy:
-        src: /home/lastation4/ctrs-utils/bin/arm/dvmhost
+        src: /opt/centrunk/util/bin/arm/dvmhost
         dest: /opt/dvm/dvmhost
         owner: root
         group: root
         mode: '0644'
+        remote_src: yes
       when: ansible_architecture is search("arm*")
     - name: Move in dvmcmd for arm
       ansible.builtin.copy:
-        src: /home/lastation4/ctrs-utils/bin/arm/dvmcmd
+        src: /opt/centrunk/util/bin/arm/dvmcmd
         dest: /opt/dvm/dvmcmd
         owner: root
         group: root
         mode: '0644'
+        remote_src: yes
       when: ansible_architecture is search("arm*")
 
-- name: Detect configuration and apply proper configuration files. 
+- name: Detect configuration and apply proper configuration files.
   hosts: all
   become: yes
   become_user: root
