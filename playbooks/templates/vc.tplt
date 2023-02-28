@@ -11,14 +11,14 @@ network:
     allowDiagnosticTransfer: true
     debug: false
     enable: true
-    id: {{ hostvars[inventory_hostname].vars.type.fne_node_vc }}
+    id: {{ hostvars[inventory_hostname].vars.fne_node_vc }}
     jitter: 500
     password: CENTRUNK
     port: 62030
     rconAddress: 127.0.0.1
     rconDebug: false
     rconEnable: true
-    rconPassword: {{ hostvars[inventory_hostname].vars.type.rcon_password }}
+    rconPassword: {{ hostvars[inventory_hostname].vars.rcon_password }}
     rconPort: 9991
     slot1: true
     slot2: false
@@ -55,18 +55,18 @@ protocols:
         voiceOnControl: false
 system:
     config:
-        channelId: {{ hostvars[inventory_hostname].vars.type.iden_channel }}
-        channelNo: {{ hostvars[inventory_hostname].vars.type.control_channel }}
-        nac: {{ hostvars[inventory_hostname].vars.type.nac }}
-        netId: {{ hostvars[inventory_hostname].vars.type.wacn }}
-        pSuperGroup: {{ hostvars[inventory_hostname].vars.type.super_group }}
-        rfssId: {{ hostvars[inventory_hostname].vars.type.rfss }}
-        siteId: {{ hostvars[inventory_hostname].vars.type.site }}
-        sysId: {{ hostvars[inventory_hostname].vars.type.sys }}
+        channelId: {{ hostvars[inventory_hostname].vars.iden_channel }}
+        channelNo: {{ hostvars[inventory_hostname].vars.control_channel }}
+        nac: {{ hostvars[inventory_hostname].vars.nac }}
+        netId: {{ hostvars[inventory_hostname].vars.wacn }}
+        pSuperGroup: {{ hostvars[inventory_hostname].vars.super_group }}
+        rfssId: {{ hostvars[inventory_hostname].vars.rfss }}
+        siteId: {{ hostvars[inventory_hostname].vars.site }}
+        sysId: {{ hostvars[inventory_hostname].vars.sys }}
         voiceChNo:
-            - {{ hostvars[inventory_hostname].vars.type.voice_channel }}
+            - {{ hostvars[inventory_hostname].vars.voice_channel }}
     cwId:
-        callsign: {{ hostvars[inventory_hostname].vars.type.callsign }}
+        callsign: {{ hostvars[inventory_hostname].vars.callsign }}
         enable: true
         time: 15
     duplex: true
@@ -74,7 +74,7 @@ system:
     iden_table:
         file: /opt/dvm/iden_table.dat
         time: 30
-    identity: {{ hostvars[inventory_hostname].vars.type.fne_identity_vc }}
+    identity: {{ hostvars[inventory_hostname].vars.fne_identity_vc }}
     info:
         height: 1
         latitude: 31.450535
@@ -116,7 +116,7 @@ system:
         protocol:
             type: uart
             uart:
-                port: {{ hostvars[inventory_hostname].vars.type.modem_port_vc }}
+                port: {{ hostvars[inventory_hostname].vars.modem_port_vc }}
                 speed: 115200
             udp:
                 endpointAddress: 0.0.0.0
