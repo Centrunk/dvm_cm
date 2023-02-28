@@ -54,7 +54,6 @@
         mode: '0644'
         remote_src: yes
       when: ansible_architecture is search("x86_64")
-
     - name: Move in Binaries for arm
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/arm/dvmhost
@@ -82,7 +81,7 @@
     - name: Generate VOC config file.
       ansible.builtin.template:
         src: voc.tplt
-        dest: /opt/dvm/configVOC1.yml
+        dest: /opt/centrunk/dvm/configVOC1.yml
         owner: root
         group: root
         mode: '0644'
@@ -90,7 +89,7 @@
     - name: Generate TRS config files (COMBO).
       ansible.builtin.template:
         src: cc.tplt
-        dest: /opt/dvm/configCC1.yml
+        dest: /opt/centrunk/dvm/configCC1.yml
         owner: root
         group: root
         mode: '0644'
@@ -98,7 +97,7 @@
     - name: Generate TRS config files (COMBO).
       ansible.builtin.template:
         src: vc.tplt
-        dest: /opt/dvm/configVC1.yml
+        dest: /opt/centrunk/dvm/configVC1.yml
         owner: root
         group: root
         mode: '0644'
@@ -106,7 +105,7 @@
     - name: Generate TRS config files (CC).
       ansible.builtin.template:
         src: cc.tplt
-        dest: /opt/dvm/configCC1.yml
+        dest: /opt/centrunk/dvm/configCC1.yml
         owner: root
         group: root
         mode: '0644'
@@ -114,7 +113,7 @@
     - name: Generate TRS config files (VC).
       ansible.builtin.template:
         src: vc.tplt
-        dest: /opt/dvm/configVC1.yml
+        dest: /opt/centrunk/dvm/configVC1.yml
         owner: root
         group: root
         mode: '0644'
@@ -122,7 +121,7 @@
     - name: Generate TRS config files (CONV).
       ansible.builtin.template:
         src: conv.tplt
-        dest: /opt/dvm/configCONV1.yml
+        dest: /opt/centrunk/dvm/configCONV1.yml
         owner: root
         group: root
         mode: '0644'
@@ -130,7 +129,7 @@
     - name: Generate TRS config files (DVRS).
       ansible.builtin.template:
         src: dvrs.tplt
-        dest: /opt/dvm/configDVRS1.yml
+        dest: /opt/centrunk/dvm/configDVRS1.yml
         owner: root
         group: root
         mode: '0644'
@@ -143,11 +142,12 @@
   tasks:
   - name: Register unit file for system type VOC.
     ansible.builtin.copy:
-      src: /home/lastation4/ctrs-utils/centrunk.voc.service
+      src: /opt/centrunk/util/centrunk.voc.service
       dest: /etc/systemd/system/centrunk.voc.service
       owner: root
       group: root
       mode: '0644'
+      remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "VOC"
 - name: Register unit file for system type COMBO.
   hosts: all
@@ -156,51 +156,57 @@
   tasks:
   - name: Register unit file for system type COMBO (CC).
     ansible.builtin.copy:
-      src: /home/lastation4/ctrs-utils/centrunk.cc.service
+      src: /opt/centrunk/util/centrunk.cc.service
       dest: /etc/systemd/system/centrunk.cc.service
       owner: root
       group: root
       mode: '0644'
+      remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "COMBO"
   - name: Register unit file for system type COMBO (VC).
     ansible.builtin.copy:
-      src: /home/lastation4/ctrs-utils/centrunk.vc.service
+      src: /opt/centrunk/util/centrunk.vc.service
       dest: /etc/systemd/system/centrunk.vc.service
       owner: root
       group: root
       mode: '0644'
+      remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "COMBO"
   - name: Register unit file for system type CC.
     ansible.builtin.copy:
-      src: /home/lastation4/ctrs-utils/centrunk.cc.service
+      src: /opt/centrunk/util/centrunk.cc.service
       dest: /etc/systemd/system/centrunk.cc.service
       owner: root
       group: root
       mode: '0644'
+      remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "CC"
   - name: Register unit file for system type VC.
     ansible.builtin.copy:
-      src: /home/lastation4/ctrs-utils/centrunk.vc.service
+      src: /opt/centrunk/util/centrunk.vc.service
       dest: /etc/systemd/system/centrunk.vc.service
       owner: root
       group: root
       mode: '0644'
+      remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "VC"
   - name: Register unit file for system type CONV.
     ansible.builtin.copy:
-      src: /home/lastation4/ctrs-utils/centrunk.conv.service
+      src: /opt/centrunk/util/centrunk.conv.service
       dest: /etc/systemd/system/centrunk.conv.service
       owner: root
       group: root
       mode: '0644'
+      remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "CONV"
   - name: Register unit file for system type DVRS.
     ansible.builtin.copy:
-      src: /home/lastation4/ctrs-utils/centrunk.dvrs.service
+      src: /opt/centrunk/util/centrunk.dvrs.service
       dest: /etc/systemd/system/centrunk.dvrs.service
       owner: root
       group: root
       mode: '0644'
+      remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "DVRS"
 
 
@@ -210,6 +216,11 @@
   become: yes
   become_user: root
   tasks:
+  - name: Establish Log Directory
+    ansible.builtin.file:
+      path: /var/log/centrunk
+      state: directory
+      mode: '0755'
   - name: Enable Service (VOC)
     ansible.builtin.systemd:
       name: centrunk.voc.service

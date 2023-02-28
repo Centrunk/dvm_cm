@@ -37,6 +37,8 @@ ctrs:
             fne_identity_vc: 1-B VC
             callsign: WRUP970
             rcon_password: "ads(LKkjhf67898!"
+            cc_rcon_port: 9991
+            vc_rcon_port: 9992
         10.0.0.3:
           vars:
             type: VC
@@ -54,6 +56,7 @@ ctrs:
             fne_identity_vc: 1-B VC
             callsign: WRUP970
             rcon_password: "ads(LKkjhf67898!"
+            vc_rcon_port: 9991
         10.0.0.4:
           vars:
             type: CC
@@ -71,6 +74,7 @@ ctrs:
             fne_identity_cc: 1-B CC
             callsign: WRUP970
             rcon_password: "ads(LKkjhf67898!"
+            cc_rcon_port: 9991
         10.0.0.5:
           vars:
             type: CONV

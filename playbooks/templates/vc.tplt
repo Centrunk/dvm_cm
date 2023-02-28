@@ -19,7 +19,7 @@ network:
     rconDebug: false
     rconEnable: true
     rconPassword: {{ hostvars[inventory_hostname].vars.rcon_password }}
-    rconPort: 9991
+    rconPort: {{ hostvars[inventory_hostname].vars.vc_rcon_port }}
     slot1: true
     slot2: false
     updateLookups: true
