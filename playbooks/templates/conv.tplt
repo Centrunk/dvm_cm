@@ -19,22 +19,23 @@ network:
     rconDebug: false
     rconEnable: true
     rconPassword: {{ hostvars[inventory_hostname].vars.rcon_password }}
-    rconPort: 9991
+    rconPort: {{ hostvars[inventory_hostname].vars.vc_rcon_port }}
     slot1: true
-    slot2: false
+    slot2: true
     updateLookups: true
 protocols:
     p25:
-        callHang: 15
+        callHang: 5
         control:
-            ackRequests: true
-            broadcast: false
+            ackRequests: false
+            broadcast: fale
             dedicated: false
             duration: 29
             enable: false
             interval: 30
+            disableTSDUMBF: false
         debug: false
-        disableCompositeFlag: true
+        disableCompositeFlag: false
         disableNetworkHDU: false
         dumpDataPacket: false
         dumpTsbkData: false
@@ -43,20 +44,25 @@ protocols:
         inhibitIllegal: false
         legacyGroupGrnt: true
         legacyGroupReg: false
+        localEmergAlarm: false
         noMessageAck: true
         noStatusAck: false
         queueSize: 15
         repeatDataPacket: true
         silenceThreshold: 124
+        sndcpGrant: false
         tduPreambleCount: 6
+        unitToUnitAvailCheck: true
         verbose: true
         verifyAff: false
         verifyReg: false
         voiceOnControl: false
 system:
+    activeTickDelay: 5
     config:
+        authoritative: true
         channelId: {{ hostvars[inventory_hostname].vars.iden_channel }}
-        channelNo: {{ hostvars[inventory_hostname].vars.voice_channel}}
+        channelNo: {{ hostvars[inventory_hostname].vars.voice_channel }}
         nac: {{ hostvars[inventory_hostname].vars.nac }}
         netId: {{ hostvars[inventory_hostname].vars.wacn }}
         pSuperGroup: {{ hostvars[inventory_hostname].vars.super_group }}
@@ -64,35 +70,39 @@ system:
         siteId: {{ hostvars[inventory_hostname].vars.site }}
         sysId: {{ hostvars[inventory_hostname].vars.sys }}
         voiceChNo:
-            - {{ hostvars[inventory_hostname].vars.voice_channel }}
+            - channelNo: {{ hostvars[inventory_hostname].vars.voice_channel }}
+              rconAddress: {{ hostvars[inventory_hostname].vars.vc_rcon_address }}
+              rconPort: {{ hostvars[inventory_hostname].vars.vc_rcon_port }}
+              rconPassword: {{ hostvars[inventory_hostname].vars.rcon_password }}
     cwId:
         callsign: {{ hostvars[inventory_hostname].vars.callsign }}
         enable: true
-        time: 15
+        time: 10
     duplex: true
-    fixedMode: false
+    fixedMode: true
     iden_table:
         file: /opt/centrunk/dvm/iden_table.dat
         time: 30
     identity: {{ hostvars[inventory_hostname].vars.fne_identity }}
+    idleTickDelay: 5
     info:
-        height: 1
-        latitude: 31.450535
-        location: "Texas, USA"
-        longitude: "-98.569280"
-        power: 10
+        latitude: {{ hostvars[inventory_hostname].vars.info_lat }}
+        location: {{ hostvars[inventory_hostname].vars.info_location }}
+        longitude: {{ hostvars[inventory_hostname].vars.info_long }}
+
+    localTimeOffset: {{ hostvars[inventory_hostname].vars.gmt_offset }}
     modem:
         adfGainMode: 0
         cosLockout: false
         dcBlocker: true
         debug: false
-        disableOFlowReset: true
+        disableOFlowReset: false
         dmrDiscBWAdj: 0
         dmrPostBWAdj: 0
         dmrRxDelay: 7
         dmrSymLvl1Adj: 0
         dmrSymLvl3Adj: 0
-        fdmaPreamble: 250
+        fdmaPreamble: 80
         hotspot:
             adfGainMode: 0
             afcEnable: false
@@ -105,8 +115,8 @@ system:
             nxdnPostBWAdj: 0
             p25DiscBWAdj: 0
             p25PostBWAdj: 0
-            rxTuning: 0
-            txTuning: 0
+            rxTuning: {{ hostvars[inventory_hostname].vars.vc_rx_tuning }}
+            txTuning: {{ hostvars[inventory_hostname].vars.vc_tx_tuning }}
         p25CorrCount: 8
         p25DiscBWAdj: 0
         p25PostBWAdj: 0
@@ -118,10 +128,6 @@ system:
             uart:
                 port: {{ hostvars[inventory_hostname].vars.modem_port }}
                 speed: 115200
-            udp:
-                endpointAddress: 0.0.0.0
-                mode: master
-                port: 3334
         pttInvert: false
         repeater:
             dmrSymLvl1Adj: 0
@@ -133,19 +139,21 @@ system:
         rssiMappingFile: /opt/centrunk/dvm/RSSI.dat
         rxDCOffset: 0
         rxInvert: false
-        rxLevel: 60
-        rxTuning: 0
-        trace: false
+        rxLevel: 50
+        trace: true
         txDCOffset: 0
         txInvert: false
         txLevel: 50
-        txTuning: 0
     radio_id:
         acl: false
         file: /opt/centrunk/dvm/rid_acl.dat
         time: 2
     rfTalkgroupHang: 10
+    simplexSameFrequency: false
     talkgroup_id:
         Time: 2
         acl: false
         file: /opt/centrunk/dvm/tg_acl.dat
+    timeout: 180
+
+    
