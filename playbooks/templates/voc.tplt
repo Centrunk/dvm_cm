@@ -27,11 +27,11 @@ protocols:
     p25:
         callHang: 5
         control:
-            ackRequests: false
-            broadcast: false
-            dedicated: false
+            ackRequests: true
+            broadcast: true
+            dedicated: true
             duration: 29
-            enable: false
+            enable: true
             interval: 30
             disableTSDUMBF: false
         debug: false
