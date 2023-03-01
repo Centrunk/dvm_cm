@@ -72,7 +72,7 @@ system:
     duplex: true
     fixedMode: false
     iden_table:
-        file: /opt/dvm/iden_table.dat
+        file: /opt/centrunk/dvm/iden_table.dat
         time: 30
     identity: {{ hostvars[inventory_hostname].vars.fne_identity_cc }}
     info:
@@ -130,7 +130,7 @@ system:
             nxdnSymLvl3Adj: 0
             p25SymLvl1Adj: 0
             p25SymLvl3Adj: 0
-        rssiMappingFile: /opt/dvm/RSSI.dat
+        rssiMappingFile: /opt/centrunk/dvm/RSSI.dat
         rxDCOffset: 0
         rxInvert: false
         rxLevel: 60
@@ -142,10 +142,10 @@ system:
         txTuning: 0
     radio_id:
         acl: false
-        file: /opt/dvm/rid_acl.dat
+        file: /opt/centrunk/dvm/rid_acl.dat
         time: 2
     rfTalkgroupHang: 10
     talkgroup_id:
         Time: 2
         acl: false
-        file: /opt/dvm/tg_acl.dat
+        file: /opt/centrunk/dvm/tg_acl.dat

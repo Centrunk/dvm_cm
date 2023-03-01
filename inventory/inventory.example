@@ -88,7 +88,7 @@ ctrs:
             nac: 13B
             sys: 13B
             fne_node: 12002
-            modem_port: /dev/ttyUSB1
+            modem_port: /dev/ttyACM0
             fne_identity: 1-B CONV
             callsign: WRUP970
             rcon_password: "ads(LKkjhf67898!"
@@ -105,7 +105,7 @@ ctrs:
             nac: 13B
             sys: 13B
             fne_node: 12002
-            modem_port: /dev/ttyUSB1
+            modem_port: /dev/ttyAMA0
             fne_identity: 1-B DVRS
             callsign: WRUP970
             rcon_password: "ads(LKkjhf67898!"
