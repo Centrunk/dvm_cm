@@ -1,0 +1,17 @@
+- name: "[PRE] Perform tasks to make hotspots work."
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    - name: "Fixup cmdline.txt"
+      replace:
+        path: /boot/cmdline.txt
+        regexp: 'console=serial0,115200 '
+
+    - name: "Fixup config.txt"
+      lineinfile:
+        path: /boot/config.txt
+        line: 'dtoverlay=pi3-disable-bt'
+        state: present
+    - name: Reboot the hotspot to apply changes.
+      ansible.builtin.reboot:
