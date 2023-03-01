@@ -56,7 +56,7 @@ protocols:
 system:
     config:
         channelId: {{ hostvars[inventory_hostname].vars.iden_channel }}
-        channelNo: {{ hostvars[inventory_hostname].vars.control_channel }}
+        channelNo: {{ hostvars[inventory_hostname].vars.voice_channel }}
         nac: {{ hostvars[inventory_hostname].vars.nac }}
         netId: {{ hostvars[inventory_hostname].vars.wacn }}
         pSuperGroup: {{ hostvars[inventory_hostname].vars.super_group }}

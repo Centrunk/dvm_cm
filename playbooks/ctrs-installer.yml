@@ -4,7 +4,47 @@
   become: yes
   become_user: root
   tasks:
-    # install python3, python3-pip, and git
+    - name: Check if CC Service Exists
+      stat: path=/etc/systemd/system/centrunk.cc.service
+      register: cc_service_status
+    - name: Check if VC Service Exists
+      stat: path=/etc/systemd/system/centrunk.vc.service
+      register: vc_service_status
+    - name: Check if VOC Service Exists
+      stat: path=/etc/systemd/system/centrunk.voc.service
+      register: voc_service_status
+    - name: Check if DVRS Service Exists
+      stat: path=/etc/systemd/system/centrunk.dvrs.service
+      register: dvrs_service_status
+    - name: Check if CONV Service Exists
+      stat: path=/etc/systemd/system/centrunk.conv.service
+      register: conv_service_status
+    - name: Stop Centrunk Services
+      ansible.builtin.systemd:
+        name: centrunk.cc
+        state: stopped
+      when: cc_service_status.stat.exists
+    - name: Stop Centrunk Services
+      ansible.builtin.systemd:
+        name: centrunk.vc
+        state: stopped
+      when: vc_service_status.stat.exists
+    - name: Stop Centrunk Services
+      ansible.builtin.systemd:
+        name: centrunk.voc
+        state: stopped
+      when: voc_service_status.stat.exists
+    - name: Stop Centrunk Services
+      ansible.builtin.systemd:
+        name: centrunk.dvrs
+        state: stopped
+      when: dvrs_service_status.stat.exists
+    - name: Stop Centrunk Services
+      ansible.builtin.systemd:
+        name: centrunk.conv
+        state: stopped
+      when: conv_service_status.stat.exists
+# install python3, python3-pip, and git
     - name: Install Centrunk Dependencies
       ansible.builtin.apt:
         pkg:
@@ -57,7 +97,7 @@
     - name: Move in dvmcmd for x86_64
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/x86_64/dvmcmd
-        dest: /opt/dvm/dvmcmd
+        dest: /opt/centrunk/dvm/dvmcmd
         owner: root
         group: root
         mode: '0744'
@@ -66,7 +106,7 @@
     - name: Move in Binaries for arm
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/arm/dvmhost
-        dest: /opt/dvm/dvmhost
+        dest: /opt/centrunk/dvm/dvmhost
         owner: root
         group: root
         mode: '0744'
@@ -75,7 +115,7 @@
     - name: Move in dvmcmd for arm
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/arm/dvmcmd
-        dest: /opt/dvm/dvmcmd
+        dest: /opt/centrunk/dvm/dvmcmd
         owner: root
         group: root
         mode: '0744'
