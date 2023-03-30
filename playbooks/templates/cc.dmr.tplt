@@ -15,11 +15,11 @@ network:
     jitter: 500
     password: CENTRUNK
     port: 62032
-    rconAddress: 127.0.0.1
-    rconDebug: false
-    rconEnable: true
-    rconPassword: {{ hostvars[inventory_hostname].vars.rcon_password }}
-    rconPort: {{ hostvars[inventory_hostname].vars.cc_rcon_port }}
+    restAddress: 127.0.0.1
+    restDebug: false
+    restEnable: true
+    restPassword: {{ hostvars[inventory_hostname].vars.rcon_password }}
+    restPort: {{ hostvars[inventory_hostname].vars.cc_rcon_port }}
     slot1: true
     slot2: true
     updateLookups: true
@@ -56,9 +56,9 @@ system:
         siteId: {{ hostvars[inventory_hostname].vars.site }}
         voiceChNo:
             - channelNo: {{ hostvars[inventory_hostname].vars.voice_channel }}
-              rconAddress: {{ hostvars[inventory_hostname].vars.vc_rcon_address }}
-              rconPort: {{ hostvars[inventory_hostname].vars.vc_rcon_port }}
-              rconPassword: {{ hostvars[inventory_hostname].vars.rcon_password }}
+              restAddress: {{ hostvars[inventory_hostname].vars.vc_rcon_address }}
+              restPort: {{ hostvars[inventory_hostname].vars.vc_rcon_port }}
+              restPassword: {{ hostvars[inventory_hostname].vars.rcon_password }}
     cwId:
         callsign: {{ hostvars[inventory_hostname].vars.callsign }}
         enable: true
