@@ -1,0 +1,97 @@
+ctrs:
+    hosts:
+        10.0.0.2:
+          vars:
+            type: COMBO
+            iden_channel: 3
+            voice_channel: 918
+            control_channel: 120
+            color_code: 1
+            dmrNetID: 9
+            site: 1
+            fne_node_cc: 12001
+            modem_port_cc: /dev/ttyUSB1
+            fne_identity_cc: 1-B CC/DATA
+            fne_node_vc: 12002
+            modem_port_vc: /dev/ttyUSB2
+            fne_identity_vc: 1-B VC/VC
+            callsign: WRUP970
+            rcon_password: "ads(LKkjhf67898!"
+            cc_rcon_port: 9991
+            cc_rcon_address: 127.0.0.1
+            vc_rcon_port: 9992
+            vc_rcon_address: 127.0.0.1
+            cc_tx_tuning: 0
+            cc_rx_tuning: 0
+            vc_tx_tuning: 0
+            vc_rx_tuning: 0
+            gmt_offset: -6
+            info_lat: 31
+            info_long: -98
+            info_location: "Texas, USA"
+        10.0.0.3:
+          vars:
+            type: VC
+            iden_channel: 3
+            voice_channel: 120
+            control_channel: 120
+            color_code: 1
+            dmrNetID: 9
+            site: B
+            fne_node_vc: 12002
+            modem_port_vc: /dev/ttyUSB2
+            fne_identity_vc: 1-B VC
+            callsign: WRUP970
+            rcon_password: "ads(LKkjhf67898!"
+            vc_rcon_port: 9991
+            vc_rcon_address: 127.0.0.1
+            vc_tx_tuning: 0
+            vc_rx_tuning: 0
+            gmt_offset: -6
+            info_lat: 31
+            info_long: -98
+            info_location: "Texas, USA"
+        10.0.0.4:
+          vars:
+            type: CC
+            iden_channel: 3
+            voice_channel: 120
+            control_channel: 120
+            color_code: 1
+            dmrNetID: 9
+            site: B
+            fne_node_cc: 12002
+            modem_port_cc: /dev/ttyUSB1
+            fne_identity_cc: 1-B CC
+            callsign: WRUP970
+            rcon_password: "ads(LKkjhf67898!"
+            cc_rcon_port: 9991
+            cc_rcon_address: 127.0.0.1
+            cc_tx_tuning: 0
+            cc_rx_tuning: 0
+            gmt_offset: -6
+            info_lat: 31
+            info_long: -98
+            info_location: "Texas, USA"
+        10.0.0.5:
+          vars:
+            type: CONV
+            iden_channel: 3
+            voice_channel: 120
+            control_channel: 120
+            site: B
+            color_code: 1
+            dmrNetID: 9
+            fne_node: 12002
+            modem_port: /dev/ttyACM0
+            fne_identity: 1-B CONV
+            callsign: WRUP970
+            rcon_password: "ads(LKkjhf67898!"
+            vc_rcon_port: 9991
+            vc_rcon_address: 127.0.0.1
+            vc_tx_tuning: 0
+            vc_rx_tuning: 0
+            gmt_offset: -6
+            info_lat: 31
+            info_long: -98
+            info_location: "Texas, USA"
