@@ -63,7 +63,7 @@
         version: master
         force: yes
 
-- name: Initial CTRS CCM Setup
+- name: [BIN] Download and register latest DVMHost binaries.
   hosts: all
   become: yes
   become_user: root
@@ -84,45 +84,25 @@
         group: root
         mode: '0644'
         remote_src: yes
-    # copy the dvmhost binary
-    - name: Move in dvmhost for x86_64
-      ansible.builtin.copy:
-        src: /opt/centrunk/util/bin/x86_64/dvmhost
-        dest: /opt/centrunk/dvm/dvmhost
-        owner: root
-        group: root
-        mode: '0744'
-        remote_src: yes
+    # download the dvmhost binary
+    - name: Get latest release from DVMHost GitHub for x86_64
+      ansible.builtin.shell:
+        cmd: 'curl -s https://api.github.com/repos/DVMProject/dvmhost/releases/latest | grep "browser_download_url.*dvmhost-amd64" | cut -d : -f 2,3 |  tr -d \" | wget -qi - -O dvmhost'
+        chdir: /opt/centrunk/dvm/
       when: ansible_architecture is search("x86_64")
-    - name: Move in dvmcmd for x86_64
-      ansible.builtin.copy:
-        src: /opt/centrunk/util/bin/x86_64/dvmcmd
-        dest: /opt/centrunk/dvm/dvmcmd
-        owner: root
-        group: root
-        mode: '0744'
-        remote_src: yes
-      when: ansible_architecture is search("x86_64")
-    - name: Move in Binaries for arm
-      ansible.builtin.copy:
-        src: /opt/centrunk/util/bin/arm/dvmhost
-        dest: /opt/centrunk/dvm/dvmhost
-        owner: root
-        group: root
-        mode: '0744'
-        remote_src: yes
+    - name: Get latest release from DVMHost GitHub for arm
+      ansible.builtin.shell:
+        cmd: 'curl -s https://api.github.com/repos/DVMProject/dvmhost/releases/latest | grep "browser_download_url.*dvmhost-armhf" | cut -d : -f 2,3 |  tr -d \" | wget -qi - -O dvmhost'
+        chdir: /opt/centrunk/dvm/
       when: ansible_architecture is search("arm*")
-    - name: Move in dvmcmd for arm
-      ansible.builtin.copy:
-        src: /opt/centrunk/util/bin/arm/dvmcmd
-        dest: /opt/centrunk/dvm/dvmcmd
+# fixup permissions
+    - name: Conform dvmhost file permissions.
+      ansible.builtin.file:
+        path: /opt/centrunk/dvm
         owner: root
         group: root
         mode: '0744'
-        remote_src: yes
-      when: ansible_architecture is search("arm*")
-
-- name: Detect configuration and apply proper configuration files.
+- name: [CONFIG] Detect configuration and apply proper configuration files.
   hosts: all
   become: yes
   become_user: root
@@ -184,7 +164,7 @@
         mode: '0644'
       when: hostvars[inventory_hostname].vars.type == "DVRS"
 
-- name: Configure systemd based on system type.  
+- name: [SVC] Configure systemd based on system type.  
   hosts: all
   become: yes
   become_user: root
@@ -260,7 +240,7 @@
 
 
 # start centrunk service
-- name: Enable Centrunk CCM Service(s)
+- name: [SVC] Enable Centrunk CCM.
   hosts: all
   become: yes
   become_user: root
@@ -317,3 +297,22 @@
       masked: no
       daemon_reload: yes
     when: hostvars[inventory_hostname].vars.type == "CONV"
+- name: "[POST] Perform tasks to make hotspots work."
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    - name: "Fixup cmdline.txt"
+      replace:
+        path: /boot/cmdline.txt
+        regexp: 'console=serial0,115200 '
+      when: ansible_architecture is search("arm*")
+    - name: "Fixup config.txt"
+      lineinfile:
+        path: /boot/config.txt
+        line: 'dtoverlay=pi3-disable-bt'
+        state: present
+      when: ansible_architecture is search("arm*")
+    - name: Reboot the hotspot to apply changes.
+      ansible.builtin.reboot:
+      when: ansible_architecture is search("arm*")
