@@ -99,6 +99,8 @@ ctrs:
             fne_identity_cc: 1-B CC
             callsign: WRUP970
             rcon_password: "ads(LKkjhf67898!"
+            vc_rcon_port: 9991
+            vc_rcon_address: 127.0.0.1
             cc_rcon_port: 9991
             cc_rcon_address: 127.0.0.1
             cc_tx_tuning: 0
