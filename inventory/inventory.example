@@ -12,6 +12,7 @@ ctrs:
             site: B
             nac: 13B
             sys: 13B
+            fne_port: 62030
             fne_node: 12001
             modem_port: /dev/ttyUSB1
             fne_identity: 1-B VOC
@@ -37,6 +38,7 @@ ctrs:
             site: B
             nac: 13B
             sys: 13B
+            fne_port: 62030
             fne_node_cc: 12001
             modem_port_cc: /dev/ttyUSB1
             fne_identity_cc: 1-B CC
@@ -69,6 +71,7 @@ ctrs:
             site: B
             nac: 13B
             sys: 13B
+            fne_port: 62030
             fne_node_vc: 12002
             modem_port_vc: /dev/ttyUSB2
             fne_identity_vc: 1-B VC
@@ -94,11 +97,14 @@ ctrs:
             site: B
             nac: 13B
             sys: 13B
+            fne_port: 62030
             fne_node_cc: 12002
             modem_port_cc: /dev/ttyUSB1
             fne_identity_cc: 1-B CC
             callsign: WRUP970
             rcon_password: "ads(LKkjhf67898!"
+            vc_rcon_port: 9991
+            vc_rcon_address: 127.0.0.1
             cc_rcon_port: 9991
             cc_rcon_address: 127.0.0.1
             cc_tx_tuning: 0
@@ -119,6 +125,7 @@ ctrs:
             site: B
             nac: 13B
             sys: 13B
+            fne_port: 62030
             fne_node: 12002
             modem_port: /dev/ttyACM0
             fne_identity: 1-B CONV
@@ -144,6 +151,7 @@ ctrs:
             site: B
             nac: 13B
             sys: 13B
+            fne_port: 62030
             fne_node: 12002
             modem_port: /dev/ttyAMA0
             fne_identity: 1-B DVRS
