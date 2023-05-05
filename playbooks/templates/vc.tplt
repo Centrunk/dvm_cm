@@ -14,7 +14,7 @@ network:
     id: {{ hostvars[inventory_hostname].vars.fne_node_vc }}
     jitter: 500
     password: CENTRUNK
-    port: 62030
+    port: {{ hostvars[inventory_hostname].vars.fne_port }}
     rconAddress: 127.0.0.1
     rconDebug: false
     rconEnable: true
@@ -102,7 +102,7 @@ system:
         dmrRxDelay: 7
         dmrSymLvl1Adj: 0
         dmrSymLvl3Adj: 0
-        fdmaPreamble: 80
+        fdmaPreamble: 170
         hotspot:
             adfGainMode: 0
             afcEnable: false
