@@ -1,0 +1,5 @@
+Modem Types
+ - /dev/ttyUSB1 - Typical VC for Combo Unit
+ - /dev/ttyUSB2
+ - /dev/ttyACM0
+ - /dev/ttyAMA0 - Typical Single Hotspot on Pi or CC for Combo Unit

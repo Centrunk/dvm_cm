@@ -15,7 +15,7 @@ network:
     jitter: 500
     password: CENTRUNK
     port: {{ hostvars[inventory_hostname].vars.fne_port }}
-    rconAddress: 127.0.0.1
+    rconAddress: {{ hostvars[inventory_hostname].vars.cc_rcon_address }}
     rconDebug: false
     rconEnable: true
     rconPassword: {{ hostvars[inventory_hostname].vars.rcon_password }}
