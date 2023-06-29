@@ -55,6 +55,7 @@
           - wget
           - unzip
           - inotify-tools
+          - libncurses-dev
     # download and install dvmhost
     - name: Get DVMHost Code
       ansible.builtin.git:
@@ -103,24 +104,43 @@
         mode: '0744'
         remote_src: yes
       when: ansible_architecture is search("x86_64")
-    - name: Move in Binaries for arm
+    - name: Move in Binaries for armhf
       ansible.builtin.copy:
-        src: /opt/centrunk/util/bin/arm/dvmhost
+        src: /opt/centrunk/util/bin/armhf/dvmhost
         dest: /opt/centrunk/dvm/dvmhost
         owner: root
         group: root
         mode: '0744'
         remote_src: yes
-      when: ansible_architecture is search("arm*")
-    - name: Move in dvmcmd for arm
+      when: ansible_architecture is search("armv*")
+    - name: Move in dvmcmd for armhf
       ansible.builtin.copy:
-        src: /opt/centrunk/util/bin/arm/dvmcmd
+        src: /opt/centrunk/util/bin/armhf/dvmcmd
         dest: /opt/centrunk/dvm/dvmcmd
         owner: root
         group: root
         mode: '0744'
         remote_src: yes
-      when: ansible_architecture is search("arm*")
+      when: ansible_architecture is search("armv*")
+    - name: Move in Binaries for arm64
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/bin/arm64/dvmhost
+        dest: /opt/centrunk/dvm/dvmhost
+        owner: root
+        group: root
+        mode: '0744'
+        remote_src: yes
+      when: ansible_architecture is search("arm64")
+    - name: Move in dvmcmd for arm64
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/bin/arm64/dvmcmd
+        dest: /opt/centrunk/dvm/dvmcmd
+        owner: root
+        group: root
+        mode: '0744'
+        remote_src: yes
+      when: ansible_architecture is search("arm64")
+
 
 - name: Detect configuration and apply proper configuration files.
   hosts: all
