@@ -130,7 +130,7 @@
         group: root
         mode: '0744'
         remote_src: yes
-      when: ansible_architecture is search("arm64")
+      when: ansible_architecture is search("aarch64")
     - name: Move in dvmcmd for arm64
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/arm64/dvmcmd
@@ -139,7 +139,7 @@
         group: root
         mode: '0744'
         remote_src: yes
-      when: ansible_architecture is search("arm64")
+      when: ansible_architecture is search("aarch64")
 
 
 - name: Detect configuration and apply proper configuration files.
