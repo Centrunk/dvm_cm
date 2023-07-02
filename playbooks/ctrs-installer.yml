@@ -44,6 +44,17 @@
         name: centrunk.conv
         state: stopped
       when: conv_service_status.stat.exists
+# create dictory structure
+    - name: Establish ACL
+    ansible.builtin.file:
+      path: /opt/centrunk/client_acl
+      state: directory
+      mode: '0755'
+    - name: Establish Configs
+    ansible.builtin.file:
+      path: /opt/centrunk/configs
+      state: directory
+      mode: '0755'
 # install python3, python3-pip, and git
     - name: Install Centrunk Dependencies
       ansible.builtin.apt:
@@ -56,11 +67,12 @@
           - unzip
           - inotify-tools
           - libncurses-dev
+          - npm
     # download and install dvmhost
     - name: Get DVMHost Code
       ansible.builtin.git:
         repo: https://github.com/DVMProject/dvmhost.git
-        dest: /opt/centrunk/dvm
+        dest: /opt/centrunk/dvmhost/
         version: master
         force: yes
 
@@ -74,13 +86,29 @@
         var: ansible_architecture
     - name: Clone Utils file from Git.
       ansible.builtin.git:
-        repo: https://github.com/Centrunk/ctrs-utils.git
+        repo: https://github.com/Centrunk/dvmhost3.5.git
         dest: /opt/centrunk/util
         version: master
     - name: Patch iden_table
       ansible.builtin.copy:
-        src: /opt/centrunk/util/iden_table.dat
-        dest: /opt/centrunk/dvm/iden_table.dat
+        src: /opt/centrunk/util/table/iden_table.dat
+        dest: /opt/centrunk/configs/iden_table.dat
+        owner: root
+        group: root
+        mode: '0644'
+        remote_src: yes
+    - name: Copy RID ACL
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/table/rid_acl.yml
+        dest: /opt/centrunk/configs/rid_acl.yml
+        owner: root
+        group: root
+        mode: '0644'
+        remote_src: yes
+    - name: Copy ACL stuff
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/client_acl
+        dest: /opt/centrunk/client_acl
         owner: root
         group: root
         mode: '0644'
@@ -89,7 +117,7 @@
     - name: Move in dvmhost for x86_64
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/x86_64/dvmhost
-        dest: /opt/centrunk/dvm/dvmhost
+        dest: /opt/centrunk/dvmhost
         owner: root
         group: root
         mode: '0744'
@@ -98,7 +126,7 @@
     - name: Move in dvmcmd for x86_64
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/x86_64/dvmcmd
-        dest: /opt/centrunk/dvm/dvmcmd
+        dest: /opt/centrunk/dvmcmd
         owner: root
         group: root
         mode: '0744'
@@ -107,7 +135,7 @@
     - name: Move in Binaries for armhf
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/armhf/dvmhost
-        dest: /opt/centrunk/dvm/dvmhost
+        dest: /opt/centrunk/dvmhost
         owner: root
         group: root
         mode: '0744'
@@ -116,7 +144,7 @@
     - name: Move in dvmcmd for armhf
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/armhf/dvmcmd
-        dest: /opt/centrunk/dvm/dvmcmd
+        dest: /opt/centrunk/dvmcmd
         owner: root
         group: root
         mode: '0744'
@@ -125,7 +153,7 @@
     - name: Move in Binaries for arm64
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/arm64/dvmhost
-        dest: /opt/centrunk/dvm/dvmhost
+        dest: /opt/centrunk/dvmhost
         owner: root
         group: root
         mode: '0744'
@@ -134,13 +162,24 @@
     - name: Move in dvmcmd for arm64
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/arm64/dvmcmd
-        dest: /opt/centrunk/dvm/dvmcmd
+        dest: /opt/centrunk/dvmcmd
         owner: root
         group: root
         mode: '0744'
         remote_src: yes
       when: ansible_architecture is search("aarch64")
-
+    - name: Install node packages
+      script: /opt/centrunk/client_acl/node.sh
+    - name: Create Cron job for rid update
+      ansible.builtin.cron:
+        name: "ridupdate"
+        state: present
+        minute: "0"
+        hour: "*/12"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        job: 'node "/opt/centrunk/client_acl/index.js'
 
 - name: Detect configuration and apply proper configuration files.
   hosts: all
@@ -150,7 +189,7 @@
     - name: Generate VOC config file.
       ansible.builtin.template:
         src: voc.tplt
-        dest: /opt/centrunk/dvm/configVOC1.yml
+        dest: /opt/centrunk/configs/configVOC1.yml
         owner: root
         group: root
         mode: '0644'
@@ -158,7 +197,7 @@
     - name: Generate TRS config files (COMBO).
       ansible.builtin.template:
         src: cc.tplt
-        dest: /opt/centrunk/dvm/configCC1.yml
+        dest: /opt/centrunk/configs/configCC1.yml
         owner: root
         group: root
         mode: '0644'
@@ -166,7 +205,7 @@
     - name: Generate TRS config files (COMBO).
       ansible.builtin.template:
         src: vc.tplt
-        dest: /opt/centrunk/dvm/configVC1.yml
+        dest: /opt/centrunk/configs/configVC1.yml
         owner: root
         group: root
         mode: '0644'
@@ -174,7 +213,7 @@
     - name: Generate TRS config files (CC).
       ansible.builtin.template:
         src: cc.tplt
-        dest: /opt/centrunk/dvm/configCC1.yml
+        dest: /opt/centrunk/configs/configCC1.yml
         owner: root
         group: root
         mode: '0644'
@@ -182,7 +221,7 @@
     - name: Generate TRS config files (VC).
       ansible.builtin.template:
         src: vc.tplt
-        dest: /opt/centrunk/dvm/configVC1.yml
+        dest: /opt/centrunk/configs/configVC1.yml
         owner: root
         group: root
         mode: '0644'
@@ -190,7 +229,7 @@
     - name: Generate TRS config files (CONV).
       ansible.builtin.template:
         src: conv.tplt
-        dest: /opt/centrunk/dvm/configCONV1.yml
+        dest: /opt/centrunk/configs/configCONV1.yml
         owner: root
         group: root
         mode: '0644'
@@ -198,7 +237,7 @@
     - name: Generate TRS config files (DVRS).
       ansible.builtin.template:
         src: dvrs.tplt
-        dest: /opt/centrunk/dvm/configDVRS1.yml
+        dest: /opt/centrunk/configs/configDVRS1.yml
         owner: root
         group: root
         mode: '0644'
@@ -211,7 +250,7 @@
   tasks:
   - name: Register unit file for system type VOC.
     ansible.builtin.copy:
-      src: /opt/centrunk/util/centrunk.voc.service
+      src: /opt/centrunk/util/systemd/centrunk.voc.service
       dest: /etc/systemd/system/centrunk.voc.service
       owner: root
       group: root
@@ -225,7 +264,7 @@
   tasks:
   - name: Register unit file for system type COMBO (CC).
     ansible.builtin.copy:
-      src: /opt/centrunk/util/centrunk.cc.service
+      src: /opt/centrunk/util/systemd/centrunk.cc.service
       dest: /etc/systemd/system/centrunk.cc.service
       owner: root
       group: root
@@ -234,7 +273,7 @@
     when: hostvars[inventory_hostname].vars.type == "COMBO"
   - name: Register unit file for system type COMBO (VC).
     ansible.builtin.copy:
-      src: /opt/centrunk/util/centrunk.vc.service
+      src: /opt/centrunk/util/systemd/centrunk.vc.service
       dest: /etc/systemd/system/centrunk.vc.service
       owner: root
       group: root
@@ -243,7 +282,7 @@
     when: hostvars[inventory_hostname].vars.type == "COMBO"
   - name: Register unit file for system type CC.
     ansible.builtin.copy:
-      src: /opt/centrunk/util/centrunk.cc.service
+      src: /opt/centrunk/util/systemd/centrunk.cc.service
       dest: /etc/systemd/system/centrunk.cc.service
       owner: root
       group: root
@@ -252,7 +291,7 @@
     when: hostvars[inventory_hostname].vars.type == "CC"
   - name: Register unit file for system type VC.
     ansible.builtin.copy:
-      src: /opt/centrunk/util/centrunk.vc.service
+      src: /opt/centrunk/util/systemd/centrunk.vc.service
       dest: /etc/systemd/system/centrunk.vc.service
       owner: root
       group: root
@@ -261,7 +300,7 @@
     when: hostvars[inventory_hostname].vars.type == "VC"
   - name: Register unit file for system type CONV.
     ansible.builtin.copy:
-      src: /opt/centrunk/util/centrunk.conv.service
+      src: /opt/centrunk/util/systemd/centrunk.conv.service
       dest: /etc/systemd/system/centrunk.conv.service
       owner: root
       group: root
@@ -270,7 +309,7 @@
     when: hostvars[inventory_hostname].vars.type == "CONV"
   - name: Register unit file for system type DVRS.
     ansible.builtin.copy:
-      src: /opt/centrunk/util/centrunk.dvrs.service
+      src: /opt/centrunk/util/systemd/centrunk.dvrs.service
       dest: /etc/systemd/system/centrunk.dvrs.service
       owner: root
       group: root

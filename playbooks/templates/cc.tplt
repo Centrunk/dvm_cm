@@ -1,159 +1,153 @@
 daemon: true
 log:
-    activityFilePath: /var/log/centrunk
     displayLevel: 1
     fileLevel: 1
     filePath: /var/log/centrunk
-    fileRoot: CC
+    activityFilePath: /var/log/centrunk
+    fileRoot: DVM-CC1
 network:
-    address: 10.147.17.245
-    allowActivityTransfer: true
-    allowDiagnosticTransfer: true
-    debug: false
     enable: true
     id: {{ hostvars[inventory_hostname].vars.fne_node_cc }}
-    jitter: 500
-    password: CENTRUNK
+    address: 10.147.17.245
     port: {{ hostvars[inventory_hostname].vars.fne_port }}
-    rconAddress: {{ hostvars[inventory_hostname].vars.cc_rcon_address }}
-    rconDebug: false
-    rconEnable: true
-    rconPassword: {{ hostvars[inventory_hostname].vars.rcon_password }}
-    rconPort: {{ hostvars[inventory_hostname].vars.cc_rcon_port }}
+    jitter: 360
+    password: "Centrunk!"
     slot1: true
     slot2: true
     updateLookups: true
+    allowActivityTransfer: true
+    allowDiagnosticTransfer: true
+    debug: false
+    restEnable: true
+    restAddress: {{ hostvars[inventory_hostname].vars.cc_rest_address }}
+    restPort: {{ hostvars[inventory_hostname].vars.cc_rest_port }}
+    restPassword: "{{ hostvars[inventory_hostname].vars.rest_password }}"
+    restDebug: false
 protocols:
     p25:
-        callHang: 5
-        control:
-            ackRequests: true
-            broadcast: true
-            dedicated: true
-            duration: 29
-            enable: true
-            interval: 30
-            disableTSDUMBF: false
-        debug: false
-        disableCompositeFlag: false
-        disableNetworkHDU: false
-        dumpDataPacket: false
-        dumpTsbkData: false
-        emergDisable: true
         enable: true
-        inhibitIllegal: false
+        tduPreambleCount: 6
+        control:
+            enable: true
+            ackRequests: true
+            dedicated: true
+            broadcast: true
+            interval: 300
+            duration: 1
+            disableTSDUMBF: false
+            enableTimeDateAnn: true
+        voiceOnControl: false
+        disableCompositeFlag: false
+        inhibitUnauthorized: false
         legacyGroupGrnt: true
         legacyGroupReg: false
-        localEmergAlarm: false
-        noMessageAck: true
-        noStatusAck: false
-        queueSize: 15
-        repeatDataPacket: true
-        silenceThreshold: 124
-        sndcpGrant: false
-        tduPreambleCount: 6
-        unitToUnitAvailCheck: true
-        verbose: true
         verifyAff: false
         verifyReg: false
-        voiceOnControl: false
+        dumpDataPacket: false
+        repeatDataPacket: false
+        dumpTsbkData: false
+        callHang: 5
+        noStatusAck: false
+        noMessageAck: true
+        unitToUnitAvailCheck: true
+        localEmergAlarm: false
+        sndcpGrant: false
+        silenceThreshold: 124
+        disableNetworkHDU: false
+        emergDisabled: true
+        queueSize: 15
+        verbose: true
+        debug: false
 system:
+    identity: {{ hostvars[inventory_hostname].vars.fne_identity_cc }}
+    timeout: 180
+    duplex: true
+    simplexSameFrequency: false
+    modeHang: 1
+    fixedMode: true
+    rfTalkgroupHang: 10
     activeTickDelay: 5
+    idleTickDelay: 5
+    localTimeOffset: {{ hostvars[inventory_hostname].vars.gmt_offset }}
+    info:
+        latitude: {{ hostvars[inventory_hostname].vars.info_lat }}
+        longitude: {{ hostvars[inventory_hostname].vars.info_long }}
+        height: 30
+        power: 1
+        location: {{ hostvars[inventory_hostname].vars.info_location }}
     config:
         authoritative: true
         channelId: {{ hostvars[inventory_hostname].vars.iden_channel }}
         channelNo: {{ hostvars[inventory_hostname].vars.control_channel }}
-        nac: {{ hostvars[inventory_hostname].vars.nac }}
-        netId: {{ hostvars[inventory_hostname].vars.wacn }}
-        pSuperGroup: {{ hostvars[inventory_hostname].vars.super_group }}
-        rfssId: {{ hostvars[inventory_hostname].vars.rfss }}
-        siteId: {{ hostvars[inventory_hostname].vars.site }}
-        sysId: {{ hostvars[inventory_hostname].vars.sys }}
         voiceChNo:
             - channelNo: {{ hostvars[inventory_hostname].vars.voice_channel }}
-              rconAddress: {{ hostvars[inventory_hostname].vars.vc_rcon_address }}
-              rconPort: {{ hostvars[inventory_hostname].vars.vc_rcon_port }}
-              rconPassword: {{ hostvars[inventory_hostname].vars.rcon_password }}
-    cwId:
-        callsign: {{ hostvars[inventory_hostname].vars.callsign }}
-        enable: true
-        time: 10
-    duplex: true
-    fixedMode: true
-    iden_table:
-        file: /opt/centrunk/dvm/iden_table.dat
-        time: 30
-    identity: {{ hostvars[inventory_hostname].vars.fne_identity_cc }}
-    idleTickDelay: 5
-    info:
-        latitude: {{ hostvars[inventory_hostname].vars.info_lat }}
-        location: {{ hostvars[inventory_hostname].vars.info_location }}
-        longitude: {{ hostvars[inventory_hostname].vars.info_long }}
-
-    localTimeOffset: {{ hostvars[inventory_hostname].vars.gmt_offset }}
+              restAddress: {{ hostvars[inventory_hostname].vars.vc_rest_address }}
+              restPort: {{ hostvars[inventory_hostname].vars.vc_rest_port }}
+              restPassword: {{ hostvars[inventory_hostname].vars.rest_password }}
+        nac: {{ hostvars[inventory_hostname].vars.nac }}
+        ran: 1
+        pSuperGroup: {{ hostvars[inventory_hostname].vars.super_group }}
+        netId: {{ hostvars[inventory_hostname].vars.wacn }}
+        sysId: {{ hostvars[inventory_hostname].vars.sys }}
+        rfssId: {{ hostvars[inventory_hostname].vars.rfss }}
+        siteId: {{ hostvars[inventory_hostname].vars.site }}
     modem:
-        adfGainMode: 0
-        cosLockout: false
+        protocol:
+            type: "uart"
+            uart:
+                port: {{ hostvars[inventory_hostname].vars.modem_port_cc }}
+                speed: 115200
+        rxInvert: false
+        txInvert: false
+        pttInvert: false
         dcBlocker: true
-        debug: false
-        disableOFlowReset: false
-        dmrDiscBWAdj: 0
-        dmrPostBWAdj: 0
-        dmrRxDelay: 7
-        dmrSymLvl1Adj: 0
-        dmrSymLvl3Adj: 0
+        cosLockout: false
         fdmaPreamble: 170
+        p25CorrCount: 8
+        p25FifoLength: 442
         hotspot:
+            p25DiscBWAdj: 0
+            p25PostBWAdj: 0
             adfGainMode: 0
             afcEnable: false
             afcKI: 11
             afcKP: 4
             afcRange: 1
-            dmrDiscBWAdj: 0
-            dmrPostBWAdj: 0
-            nxdnDiscBWAdj: 0
-            nxdnPostBWAdj: 0
-            p25DiscBWAdj: 0
-            p25PostBWAdj: 0
-            rxTuning: {{ hostvars[inventory_hostname].vars.cc_rx_tuning }}
             txTuning: {{ hostvars[inventory_hostname].vars.cc_tx_tuning }}
-        p25CorrCount: 8
-        p25DiscBWAdj: 0
-        p25PostBWAdj: 0
-        p25SymLvl1Adj: 0
-        p25SymLvl3Adj: 0
-        packetPlayoutTime: 10
-        protocol:
-            type: uart
-            uart:
-                port: {{ hostvars[inventory_hostname].vars.modem_port_cc }}
-                speed: 115200
-        pttInvert: false
+            rxTuning: {{ hostvars[inventory_hostname].vars.cc_rx_tuning }}
         repeater:
-            dmrSymLvl1Adj: 0
-            dmrSymLvl3Adj: 0
-            nxdnSymLvl1Adj: 0
-            nxdnSymLvl3Adj: 0
-            p25SymLvl1Adj: 0
             p25SymLvl3Adj: 0
-        rssiMappingFile: /opt/centrunk/dvm/RSSI.dat
+            p25SymLvl1Adj: 0
+        softpot:
+            rxCoarse: 127
+            rxFine: 127
+            txCoarse: 127
+            txFine: 127
+            rssiCoarse: 127
+            rssiFine: 127
         rxDCOffset: 0
-        rxInvert: false
-        rxLevel: 50
-        trace: true
         txDCOffset: 0
-        txInvert: false
+        rxLevel: 50
         txLevel: 50
+        rssiMappingFile: RSSI.dat
+        packetPlayoutTime: 10
+        disableOFlowReset: false
+        ignoreModemConfigArea: false
+        dumpModemStatus: false
+        trace: false
+        debug: false
+    cwId:
+        enable: true
+        time: 15
+        callsign: {{ hostvars[inventory_hostname].vars.callsign }}
+    iden_table:
+        file: /opt/centrunk/configs/iden_table.dat
+        time: 30
     radio_id:
-        acl: false
-        file: /opt/centrunk/dvm/rid_acl.dat
+        file: /opt/centrunk/configs/rid_acl.dat
         time: 2
-    rfTalkgroupHang: 10
-    simplexSameFrequency: false
+        acl: true
     talkgroup_id:
-        Time: 2
-        acl: false
-        file: /opt/centrunk/dvm/tg_acl.dat
-    timeout: 180
-
-    
+        file: /opt/centrunk/configs/tg_acl.yml
+        time: 2
+        acl: true
