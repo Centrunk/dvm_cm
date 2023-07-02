@@ -114,24 +114,24 @@
         mode: '0644'
         remote_src: yes
     # copy the dvmhost binary
-    - name: Move in dvmhost for amd64
+    - name: Move in dvmhost for x86_64
       ansible.builtin.copy:
-        src: /opt/centrunk/util/bin/amd64/dvmhost
+        src: /opt/centrunk/util/bin/x86_64/dvmhost
         dest: /opt/centrunk/dvmhost
         owner: root
         group: root
         mode: '0744'
         remote_src: yes
-      when: ansible_architecture is search("amd64")
-    - name: Move in dvmcmd for amd64
+      when: ansible_architecture is search("x86_64")
+    - name: Move in dvmcmd for x86_64
       ansible.builtin.copy:
-        src: /opt/centrunk/util/bin/amd64/dvmcmd
+        src: /opt/centrunk/util/bin/x86_64/dvmcmd
         dest: /opt/centrunk/dvmcmd
         owner: root
         group: root
         mode: '0744'
         remote_src: yes
-      when: ansible_architecture is search("amd64")
+      when: ansible_architecture is search("x86_64")
     - name: Move in Binaries for armhf
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/armhf/dvmhost
@@ -169,7 +169,7 @@
         remote_src: yes
       when: ansible_architecture is search("aarch64")
     - name: Install node packages
-        script: /opt/centrunk/client_acl/node.sh
+      script: /opt/centrunk/client_acl/node.sh
     - name: Create Cron job for rid update
       ansible.builtin.cron:
         name: "ridupdate"

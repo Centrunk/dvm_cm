@@ -44,17 +44,17 @@ protocols:
         verifyAff: false
         verifyReg: false
         dumpDataPacket: false
-        repeatDataPacket: true
+        repeatDataPacket: false
         dumpTsbkData: false
         callHang: 5
         noStatusAck: false
         noMessageAck: true
         unitToUnitAvailCheck: true
-        localEmergAlarm: true
+        localEmergAlarm: false
         sndcpGrant: false
         silenceThreshold: 124
         disableNetworkHDU: false
-        emergDisabled: false
+        emergDisabled: true
         queueSize: 15
         verbose: true
         debug: false
