@@ -88,7 +88,7 @@
       ansible.builtin.git:
         repo: https://github.com/Centrunk/dvmhost3.5.git
         dest: /opt/centrunk/util
-        version: master
+        version: main
     - name: Patch iden_table
       ansible.builtin.copy:
         src: /opt/centrunk/util/table/iden_table.dat
