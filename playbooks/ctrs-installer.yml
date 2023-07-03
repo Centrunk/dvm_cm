@@ -46,15 +46,15 @@
       when: conv_service_status.stat.exists
 # create dictory structure
     - name: Establish ACL
-    ansible.builtin.file:
-      path: /opt/centrunk/client_acl
-      state: directory
-      mode: '0755'
+      ansible.builtin.file:
+        path: /opt/centrunk/client_acl
+        state: directory
+        mode: '0755'
     - name: Establish Configs
-    ansible.builtin.file:
-      path: /opt/centrunk/configs
-      state: directory
-      mode: '0755'
+      ansible.builtin.file:
+        path: /opt/centrunk/configs
+        state: directory
+        mode: '0755'
 # install python3, python3-pip, and git
     - name: Install Centrunk Dependencies
       ansible.builtin.apt:
