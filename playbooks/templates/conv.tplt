@@ -88,7 +88,7 @@ system:
             - channelNo: {{ hostvars[inventory_hostname].vars.voice_channel }}
               restAddress: {{ hostvars[inventory_hostname].vars.rest_address }}
               restPort: {{ hostvars[inventory_hostname].vars.rest_port }}
-              restPassword: {{ hostvars[inventory_hostname].vars.rest_password }}
+              restPassword: "{{ hostvars[inventory_hostname].vars.rest_password }}"
         nac: {{ hostvars[inventory_hostname].vars.nac }}
         ran: 1
         pSuperGroup: {{ hostvars[inventory_hostname].vars.super_group }}
