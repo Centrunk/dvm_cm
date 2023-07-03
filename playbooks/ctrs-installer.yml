@@ -99,8 +99,8 @@
         remote_src: yes
     - name: Copy RID ACL
       ansible.builtin.copy:
-        src: /opt/centrunk/util/table/rid_acl.yml
-        dest: /opt/centrunk/configs/rid_acl.yml
+        src: /opt/centrunk/util/table/tg_acl.yml
+        dest: /opt/centrunk/configs/tg_acl.yml
         owner: root
         group: root
         mode: '0644'
