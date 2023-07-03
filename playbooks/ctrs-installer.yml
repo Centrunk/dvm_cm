@@ -45,11 +45,6 @@
         state: stopped
       when: conv_service_status.stat.exists
 # create dictory structure
-    - name: Establish ACL
-      ansible.builtin.file:
-        path: /opt/centrunk/client_acl
-        state: directory
-        mode: '0755'
     - name: Establish Configs
       ansible.builtin.file:
         path: /opt/centrunk/configs
@@ -108,11 +103,15 @@
     - name: Copy ACL stuff
       ansible.builtin.copy:
         src: /opt/centrunk/util/client_acl
-        dest: /opt/centrunk/client_acl
+        dest: /opt/centrunk/
         owner: root
         group: root
         mode: '0644'
         remote_src: yes
+    - name: Change file ownership, group and permissions on node.sh
+      ansible.builtin.file:
+        path: /opt/centrunk/client_acl/node.sh
+        mode: '0744'
     # copy the dvmhost binary
     - name: Move in dvmhost for x86_64
       ansible.builtin.copy:
@@ -120,7 +119,7 @@
         dest: /opt/centrunk/dvmhost
         owner: root
         group: root
-        mode: '0744'
+        mode: '0644'
         remote_src: yes
       when: ansible_architecture is search("x86_64")
     - name: Move in dvmcmd for x86_64
@@ -169,7 +168,7 @@
         remote_src: yes
       when: ansible_architecture is search("aarch64")
     - name: Install node packages
-      ansible.builtin.script: /opt/centrunk/client_acl/node.sh
+      ansible.builtin.shell: bash /opt/centrunk/client_acl/node.sh
     - name: Create Cron job for rid update
       ansible.builtin.cron:
         name: "ridupdate"
