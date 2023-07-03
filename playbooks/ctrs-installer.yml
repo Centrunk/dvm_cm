@@ -97,7 +97,7 @@
         group: root
         mode: '0644'
         remote_src: yes
-    - name: Copy RID ACL
+    - name: Copy TG ACL
       ansible.builtin.copy:
         src: /opt/centrunk/util/table/tg_acl.yml
         dest: /opt/centrunk/configs/tg_acl.yml
@@ -169,7 +169,7 @@
         remote_src: yes
       when: ansible_architecture is search("aarch64")
     - name: Install node packages
-      script: /opt/centrunk/client_acl/node.sh
+      ansible.builtin.script: /opt/centrunk/client_acl/node.sh
     - name: Create Cron job for rid update
       ansible.builtin.cron:
         name: "ridupdate"
