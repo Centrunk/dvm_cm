@@ -178,7 +178,7 @@
         day: "*"
         month: "*"
         weekday: "*"
-        job: 'node "/opt/centrunk/client_acl/index.js'
+        job: 'node "/opt/centrunk/client_acl/index.js"'
 
 - name: Detect configuration and apply proper configuration files.
   hosts: all
