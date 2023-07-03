@@ -1,0 +1,27 @@
+ctrs:
+    hosts:
+        10.147.17.191:
+          vars:
+            type: VOC
+            iden_channel: 3
+            voice_channel: 120
+            control_channel: 120
+            super_group: 911
+            wacn: dee00
+            rfss: 2
+            site: 24
+            nac: 134
+            sys: 13B
+            fne_node: 24001
+            modem_port: /dev/ttyACM0
+            fne_identity: 2-24 VOC
+            callsign: WRUP970
+            rcon_password: "s14PQM3RqeUk"
+            gmt_offset: -6
+            info_lat: 31
+            info_long: -98
+            info_location: "Texas, USA"
+            vc_rcon_port: 9991
+            vc_rcon_address: 10.147.17.191
+            vc_tx_tuning: 0
+            vc_rx_tuning: 0

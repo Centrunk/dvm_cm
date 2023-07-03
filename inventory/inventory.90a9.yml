@@ -1,0 +1,30 @@
+ctrs:
+    hosts:
+        10.147.17.89:
+          vars:
+            type: CC
+            iden_channel: 2
+            voice_channel: 82
+            control_channel: 1
+            super_group: 911
+            wacn: dee00
+            rfss: 1
+            site: 4
+            nac: 134
+            sys: 13B
+            fne_port: 62030
+            fne_node_cc: 4001
+            modem_port_cc: /dev/ttyAMA0
+            fne_identity_cc: 1-4 CC
+            callsign: CTRS
+            rcon_password: "PnhKAoJx199J"
+            vc_rcon_port: 9992
+            vc_rcon_address: 10.147.17.44
+            cc_rcon_port: 9991
+            cc_rcon_address: 10.147.17.89
+            cc_tx_tuning: 0
+            cc_rx_tuning: 0
+            gmt_offset: +10
+            info_lat: 31
+            info_long: -98
+            info_location: "UpsideDown"

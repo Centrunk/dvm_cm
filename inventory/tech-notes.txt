@@ -4,3 +4,34 @@ Modem Types
  - /dev/ttyUSB2
  - /dev/ttyACM0
  - /dev/ttyAMA0
+
+
+CTRS Ansible Installer
+
+#Have subscriber Run this command on their PI.
+curl -s https://install.zerotier.com/ | sudo bash
+
+sudo zerotier-cli join 88503383908b14e2
+
+sudo zerotier-cli info
+
+#Subscriber to provide ZT Node ID
+
+#SSH into FNE 10.147.17.245
+
+#Open Directory to dvm_cm
+
+#Open inventory.example
+
+#Copy path
+ctrs:
+    hosts:
+        10.0.0.1:
+          vars:
+            
+
+#Commands to be ran in Terminal
+export ANSIBLE_HOST_KEY_CHECKING=False
+cd ~/dvm_cm
+ansible-playbook -u USERNAME_HERE --become-user root -i inventory/inventory.XXXX.yml playbooks/ctrs-installer.yml -k -K
+ansible-playbook -u USERNAME_HERE --become-user root -i inventory/inventory.XXXX.yml playbooks/hotspot_fixup.yml -k -K

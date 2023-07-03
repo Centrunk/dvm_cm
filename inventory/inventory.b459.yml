@@ -1,0 +1,35 @@
+ctrs:
+    hosts:
+        10.147.17.152:
+          vars:
+            type: COMBO
+            iden_channel: 2
+            voice_channel: 970
+            control_channel: 410
+            super_group: 911
+            wacn: dee00
+            rfss: 1
+            site: 2-3D
+            nac: 13D
+            sys: 13B
+            fne_port: 62032
+            fne_node_cc: 61001
+            modem_port_cc: /dev/ttyAMA0
+            fne_identity_cc: 2-3D CC
+            fne_node_vc: 61002
+            modem_port_vc: /dev/ttyAMA0
+            fne_identity_vc: 2-3D
+            callsign: WRUP970
+            rcon_password: "%uq1%Mk$6ObrK"
+            cc_rcon_port: 9991
+            cc_rcon_address: 10.147.17.152
+            vc_rcon_port: 9992
+            vc_rcon_address: 10.147.17.152
+            cc_tx_tuning: 0
+            cc_rx_tuning: 0
+            vc_tx_tuning: 0
+            vc_rx_tuning: 0
+            gmt_offset: -6
+            info_lat: 31
+            info_long: -98
+            info_location: "Texas, USA"

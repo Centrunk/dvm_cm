@@ -1,0 +1,27 @@
+ctrs:
+    hosts:
+        10.147.17.122:
+          vars:
+            type: CONV
+            iden_channel: 3
+            voice_channel: 120
+            control_channel: 120
+            super_group: 911
+            wacn: dee00
+            rfss: 1
+            site: 24
+            nac: 134
+            sys: 13B
+            fne_node: 24002
+            modem_port: /dev/ttyACM0
+            fne_identity: 1-24 Conv 2
+            callsign: WRUP970
+            rcon_password: "Bm8MDYDjFEDx"
+            vc_rcon_port: 9991
+            vc_rcon_address: 10.147.17.122
+            vc_tx_tuning: 0
+            vc_rx_tuning: 0
+            gmt_offset: -6
+            info_lat: 31
+            info_long: -98
+            info_location: "Texas, USA"
