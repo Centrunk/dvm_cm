@@ -169,7 +169,7 @@
       when: ansible_architecture is search("aarch64")
     - name: Install node packages
       ansible.builtin.shell: bash /opt/centrunk/client_acl/node.sh
-    - name: Create Cron job for rid update
+    - name: Create Cron job for RID update
       ansible.builtin.cron:
         name: "ridupdate"
         state: present
@@ -178,7 +178,7 @@
         day: "*"
         month: "*"
         weekday: "*"
-        job: 'node "/opt/centrunk/client_acl/index.js"'
+        job: 'sudo /bin/bash /opt/centrunk/client_acl/update.sh'
 
 - name: Detect configuration and apply proper configuration files.
   hosts: all
@@ -315,7 +315,9 @@
       mode: '0644'
       remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "DVRS"
-
+# Initial Update of RID list
+  - name: Update RID List
+    ansible.builtin.shell: bash /opt/centrunk/client_acl/update.sh
 
 # start centrunk service
 - name: Enable Centrunk CCM Service(s)
