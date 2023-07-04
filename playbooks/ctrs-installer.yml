@@ -116,7 +116,7 @@
     - name: Move in dvmhost for x86_64
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/x86_64/dvmhost
-        dest: /opt/centrunk/dvmhost
+        dest: /opt/centrunk/dvmhost/dvmhost
         owner: root
         group: root
         mode: '0644'
@@ -125,7 +125,7 @@
     - name: Move in dvmcmd for x86_64
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/x86_64/dvmcmd
-        dest: /opt/centrunk/dvmcmd
+        dest: /opt/centrunk/dvmhost/dvmcmd
         owner: root
         group: root
         mode: '0744'
@@ -134,7 +134,7 @@
     - name: Move in Binaries for armhf
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/armhf/dvmhost
-        dest: /opt/centrunk/dvmhost
+        dest: /opt/centrunk/dvmhost/dvmhost
         owner: root
         group: root
         mode: '0744'
@@ -143,7 +143,7 @@
     - name: Move in dvmcmd for armhf
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/armhf/dvmcmd
-        dest: /opt/centrunk/dvmcmd
+        dest: /opt/centrunk/dvmhost/dvmcmd
         owner: root
         group: root
         mode: '0744'
@@ -152,7 +152,7 @@
     - name: Move in Binaries for arm64
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/arm64/dvmhost
-        dest: /opt/centrunk/dvmhost
+        dest: /opt/centrunk/dvmhost/dvmhost
         owner: root
         group: root
         mode: '0744'
@@ -161,7 +161,7 @@
     - name: Move in dvmcmd for arm64
       ansible.builtin.copy:
         src: /opt/centrunk/util/bin/arm64/dvmcmd
-        dest: /opt/centrunk/dvmcmd
+        dest: /opt/centrunk/dvmhost/dvmcmd
         owner: root
         group: root
         mode: '0744'
