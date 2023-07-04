@@ -78,7 +78,7 @@ system:
     config:
         authoritative: true
         channelId: {{ hostvars[inventory_hostname].vars.iden_channel }}
-        channelNo: {{ hostvars[inventory_hostname].vars.control_channel }}
+        channelNo: {{ hostvars[inventory_hostname].vars.voice_channel }}
         controlCh:
             restAddress: {{ hostvars[inventory_hostname].vars.cc_rest_address }}
             restPort: {{ hostvars[inventory_hostname].vars.cc_rest_port }}
