@@ -1,4 +1,4 @@
-daemon: false
+daemon: true
 log:
     displayLevel: 1
     fileLevel: 1
@@ -86,9 +86,9 @@ system:
             notifyEnable: true
         voiceChNo:
             - channelNo: {{ hostvars[inventory_hostname].vars.voice_channel }}
-            restAddress: {{ hostvars[inventory_hostname].vars.rest_address }}
-            restPort: {{ hostvars[inventory_hostname].vars.vc_rest_port }}
-            restPassword: "{{ hostvars[inventory_hostname].vars.rest_password }}"
+              restAddress: {{ hostvars[inventory_hostname].vars.rest_address }}
+              restPort: {{ hostvars[inventory_hostname].vars.vc_rest_port }}
+              restPassword: "{{ hostvars[inventory_hostname].vars.rest_password }}"
         nac: {{ hostvars[inventory_hostname].vars.nac }}
         ran: 1
         pSuperGroup: {{ hostvars[inventory_hostname].vars.super_group }}

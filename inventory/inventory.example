@@ -147,7 +147,7 @@ ctrs:
             type: DVRS
             fne_node: 12002
             fne_port: 63030
-            fne_identity_cc: 1-B DVRS
+            fne_identity: 1-B DVRS
             rest_address: 127.0.0.1
             cc_rest_port: 9990
             vc_rest_port: 9991
