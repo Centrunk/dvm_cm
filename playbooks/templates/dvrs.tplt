@@ -37,7 +37,7 @@ protocols:
             disableTSDUMBF: false
             enableTimeDateAnn: true
         voiceOnControl: true
-        disableCompositeFlag: false
+        disableCompositeFlag: true
         inhibitUnauthorized: false
         legacyGroupGrnt: true
         legacyGroupReg: false
