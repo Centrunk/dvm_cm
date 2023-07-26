@@ -76,7 +76,8 @@ system:
         power: 1
         location: {{ hostvars[inventory_hostname].vars.info_location }}
     config:
-        authoritative: true
+        authoritative: false
+        supervisor: false
         channelId: {{ hostvars[inventory_hostname].vars.iden_channel }}
         channelNo: {{ hostvars[inventory_hostname].vars.voice_channel }}
         controlCh:
