@@ -66,7 +66,7 @@ ctrs:
             type: VC
             fne_node_vc: 12002
             fne_port: 63030
-            fne_identity_cc: 1-B VC
+            fne_identity_vc: 1-B VC
             cc_rest_address: 127.0.0.1
             cc_rest_port: 9990
             vc_rest_address: 127.0.0.1

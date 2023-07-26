@@ -1,19 +1,30 @@
 ctrs:
-  hosts:
-    192.168.1.168:
-      vars:
-        type: VOC
-        iden_channel: 3
-        voice_channel: 120
-        control_channel: 120
-        super_group: 911
-        wacn: dee00
-        rfss: 1
-        nac: 13B
-        sys: 13B
-        fne_node: 12001
-        modem_port: /dev/ttyAMA0
-        fne_identity: 1-B VOC
-        callsign: WRUP970
-        rcon_password: "ads(LKkjhf67898!"
-        site: B
+    hosts:
+        10.0.0.1:
+          vars:
+            type: CC
+            fne_node_cc: 12002
+            fne_port: 63030
+            fne_identity_cc: 1-B CC
+            cc_rest_address: 127.0.0.1
+            cc_rest_port: 9990
+            vc_rest_address: 127.0.0.1
+            vc_rest_port: 9991
+            rest_password: "ChangeMe"
+            iden_channel: 3
+            control_channel: 120
+            voice_channel: 120
+            rfss: 1
+            site: B
+            nac: 13B
+            super_group: 911
+            wacn: dee00
+            sys: 13B
+            modem_port_cc: /dev/ttyAMA0
+            cc_tx_tuning: 0
+            cc_rx_tuning: 0
+            info_lat: 30.299419
+            info_long: -97.691909
+            info_location: "Texas"
+            gmt_offset: -6
+            callsign: WRUP970
