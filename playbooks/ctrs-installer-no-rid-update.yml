@@ -1,0 +1,400 @@
+# TODO: stop all centrunk services prior to run
+- name: "[PRE] Initial Environment Setup"
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    - name: Check if CC Service Exists
+      stat: path=/etc/systemd/system/centrunk.cc.service
+      register: cc_service_status
+    - name: Check if VC Service Exists
+      stat: path=/etc/systemd/system/centrunk.vc.service
+      register: vc_service_status
+    - name: Check if VOC Service Exists
+      stat: path=/etc/systemd/system/centrunk.voc.service
+      register: voc_service_status
+    - name: Check if DVRS Service Exists
+      stat: path=/etc/systemd/system/centrunk.dvrs.service
+      register: dvrs_service_status
+    - name: Check if CONV Service Exists
+      stat: path=/etc/systemd/system/centrunk.conv.service
+      register: conv_service_status
+    - name: Stop Centrunk Services
+      ansible.builtin.systemd:
+        name: centrunk.cc
+        state: stopped
+      when: cc_service_status.stat.exists
+    - name: Stop Centrunk Services
+      ansible.builtin.systemd:
+        name: centrunk.vc
+        state: stopped
+      when: vc_service_status.stat.exists
+    - name: Stop Centrunk Services
+      ansible.builtin.systemd:
+        name: centrunk.voc
+        state: stopped
+      when: voc_service_status.stat.exists
+    - name: Stop Centrunk Services
+      ansible.builtin.systemd:
+        name: centrunk.dvrs
+        state: stopped
+      when: dvrs_service_status.stat.exists
+    - name: Stop Centrunk Services
+      ansible.builtin.systemd:
+        name: centrunk.conv
+        state: stopped
+      when: conv_service_status.stat.exists
+# create dictory structure
+    - name: Establish Configs
+      ansible.builtin.file:
+        path: /opt/centrunk/configs
+        state: directory
+        mode: '0755'
+    - name: Establish tools
+      ansible.builtin.file:
+        path: /opt/centrunk/tools
+        state: directory
+        mode: '0755'
+# install python3, python3-pip, and git
+    - name: Install Centrunk Dependencies
+      ansible.builtin.apt:
+        pkg:
+          - stm32flash
+          - python3
+          - python3-pip
+          - git
+          - wget
+          - unzip
+          - inotify-tools
+          - libncurses-dev
+    # download and install dvmhost
+    - name: Get DVMHost Code
+      ansible.builtin.git:
+        repo: https://github.com/DVMProject/dvmhost.git
+        dest: /opt/centrunk/dvmhost/
+        version: master
+        force: yes
+
+- name: Initial CTRS CCM Setup
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    - name: ARCH
+      ansible.builtin.debug:
+        var: ansible_architecture
+    - name: Clone Utils file from Git.
+      ansible.builtin.git:
+        repo: https://github.com/Centrunk/dvmhost3.5.git
+        dest: /opt/centrunk/util
+        version: main
+    - name: Include dvmhost update script
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/tools/updatedvmhost.sh
+        dest: /opt/centrunk/tools/updatedvmhost.sh
+        owner: root
+        group: root
+        mode: a+x
+        remote_src: yes
+    - name: Patch iden_table
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/table/iden_table.dat
+        dest: /opt/centrunk/configs/iden_table.dat
+        owner: root
+        group: root
+        mode: '0644'
+        remote_src: yes
+    - name: Copy TG ACL
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/table/tg_acl.yml
+        dest: /opt/centrunk/configs/tg_acl.yml
+        owner: root
+        group: root
+        mode: '0644'
+        remote_src: yes
+    - name: Copy ACL stuff
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/client_acl
+        dest: /opt/centrunk/
+        owner: root
+        group: root
+        mode: '0644'
+        remote_src: yes
+    - name: Change file ownership, group and permissions on node.sh
+      ansible.builtin.file:
+        path: /opt/centrunk/client_acl/node.sh
+        mode: '0744'
+    # copy the dvmhost binary
+    - name: Move in dvmhost for x86_64
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/bin/x86_64/dvmhost
+        dest: /opt/centrunk/dvmhost/dvmhost
+        owner: root
+        group: root
+        mode: '0644'
+        remote_src: yes
+      when: ansible_architecture is search("x86_64")
+    - name: Move in dvmcmd for x86_64
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/bin/x86_64/dvmcmd
+        dest: /opt/centrunk/dvmhost/dvmcmd
+        owner: root
+        group: root
+        mode: '0744'
+        remote_src: yes
+      when: ansible_architecture is search("x86_64")
+    - name: Move in Binaries for armhf
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/bin/armhf/dvmhost
+        dest: /opt/centrunk/dvmhost/dvmhost
+        owner: root
+        group: root
+        mode: '0744'
+        remote_src: yes
+      when: ansible_architecture is search("armv*")
+    - name: Move in dvmcmd for armhf
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/bin/armhf/dvmcmd
+        dest: /opt/centrunk/dvmhost/dvmcmd
+        owner: root
+        group: root
+        mode: '0744'
+        remote_src: yes
+      when: ansible_architecture is search("armv*")
+    - name: Move in Binaries for arm64
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/bin/arm64/dvmhost
+        dest: /opt/centrunk/dvmhost/dvmhost
+        owner: root
+        group: root
+        mode: '0744'
+        remote_src: yes
+      when: ansible_architecture is search("aarch64")
+    - name: Move in dvmcmd for arm64
+      ansible.builtin.copy:
+        src: /opt/centrunk/util/bin/arm64/dvmcmd
+        dest: /opt/centrunk/dvmhost/dvmcmd
+        owner: root
+        group: root
+        mode: '0744'
+        remote_src: yes
+      when: ansible_architecture is search("aarch64")
+    - name: Install node packages
+      ansible.builtin.shell: bash /opt/centrunk/client_acl/node.sh
+    - name: Create Cron job for RID update
+      ansible.builtin.cron:
+        name: "ridupdate"
+        state: present
+        minute: "0"
+        hour: "*/12"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        job: 'sudo /bin/bash /opt/centrunk/client_acl/update.sh'
+    - name: Create Cron jobs for Site Update
+      ansible.builtin.cron:
+        name: "dvmupdate"
+        state: present
+        minute: "0"
+        hour: "3"
+        day: "*"
+        month: "*"
+        weekday: "5"
+        job: 'sudo /bin/bash /opt/centrunk/tools/updatedvmhost.sh'
+- name: Detect configuration and apply proper configuration files.
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    - name: Generate VOC config file.
+      ansible.builtin.template:
+        src: voc.tplt
+        dest: /opt/centrunk/configs/configVOC1.yml
+        owner: root
+        group: root
+        mode: '0644'
+      when: hostvars[inventory_hostname].vars.type == "VOC"
+    - name: Generate TRS config files (COMBO).
+      ansible.builtin.template:
+        src: cc.tplt
+        dest: /opt/centrunk/configs/configCC1.yml
+        owner: root
+        group: root
+        mode: '0644'
+      when: hostvars[inventory_hostname].vars.type == "COMBO"
+    - name: Generate TRS config files (COMBO).
+      ansible.builtin.template:
+        src: vc.tplt
+        dest: /opt/centrunk/configs/configVC1.yml
+        owner: root
+        group: root
+        mode: '0644'
+      when: hostvars[inventory_hostname].vars.type == "COMBO"
+    - name: Generate TRS config files (CC).
+      ansible.builtin.template:
+        src: cc.tplt
+        dest: /opt/centrunk/configs/configCC1.yml
+        owner: root
+        group: root
+        mode: '0644'
+      when: hostvars[inventory_hostname].vars.type == "CC"
+    - name: Generate TRS config files (VC).
+      ansible.builtin.template:
+        src: vc.tplt
+        dest: /opt/centrunk/configs/configVC1.yml
+        owner: root
+        group: root
+        mode: '0644'
+      when: hostvars[inventory_hostname].vars.type == "VC"
+    - name: Generate TRS config files (CONV).
+      ansible.builtin.template:
+        src: conv.tplt
+        dest: /opt/centrunk/configs/configCONV1.yml
+        owner: root
+        group: root
+        mode: '0644'
+      when: hostvars[inventory_hostname].vars.type == "CONV"
+    - name: Generate TRS config files (DVRS).
+      ansible.builtin.template:
+        src: dvrs.tplt
+        dest: /opt/centrunk/configs/configDVRS1.yml
+        owner: root
+        group: root
+        mode: '0644'
+      when: hostvars[inventory_hostname].vars.type == "DVRS"
+
+- name: Configure systemd based on system type.  
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+  - name: Register unit file for system type VOC.
+    ansible.builtin.copy:
+      src: /opt/centrunk/util/systemd/centrunk.voc.service
+      dest: /etc/systemd/system/centrunk.voc.service
+      owner: root
+      group: root
+      mode: '0644'
+      remote_src: yes
+    when: hostvars[inventory_hostname].vars.type == "VOC"
+- name: Register unit file for system type COMBO.
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+  - name: Register unit file for system type COMBO (CC).
+    ansible.builtin.copy:
+      src: /opt/centrunk/util/systemd/centrunk.cc.service
+      dest: /etc/systemd/system/centrunk.cc.service
+      owner: root
+      group: root
+      mode: '0644'
+      remote_src: yes
+    when: hostvars[inventory_hostname].vars.type == "COMBO"
+  - name: Register unit file for system type COMBO (VC).
+    ansible.builtin.copy:
+      src: /opt/centrunk/util/systemd/centrunk.vc.service
+      dest: /etc/systemd/system/centrunk.vc.service
+      owner: root
+      group: root
+      mode: '0644'
+      remote_src: yes
+    when: hostvars[inventory_hostname].vars.type == "COMBO"
+  - name: Register unit file for system type CC.
+    ansible.builtin.copy:
+      src: /opt/centrunk/util/systemd/centrunk.cc.service
+      dest: /etc/systemd/system/centrunk.cc.service
+      owner: root
+      group: root
+      mode: '0644'
+      remote_src: yes
+    when: hostvars[inventory_hostname].vars.type == "CC"
+  - name: Register unit file for system type VC.
+    ansible.builtin.copy:
+      src: /opt/centrunk/util/systemd/centrunk.vc.service
+      dest: /etc/systemd/system/centrunk.vc.service
+      owner: root
+      group: root
+      mode: '0644'
+      remote_src: yes
+    when: hostvars[inventory_hostname].vars.type == "VC"
+  - name: Register unit file for system type CONV.
+    ansible.builtin.copy:
+      src: /opt/centrunk/util/systemd/centrunk.conv.service
+      dest: /etc/systemd/system/centrunk.conv.service
+      owner: root
+      group: root
+      mode: '0644'
+      remote_src: yes
+    when: hostvars[inventory_hostname].vars.type == "CONV"
+  - name: Register unit file for system type DVRS.
+    ansible.builtin.copy:
+      src: /opt/centrunk/util/systemd/centrunk.dvrs.service
+      dest: /etc/systemd/system/centrunk.dvrs.service
+      owner: root
+      group: root
+      mode: '0644'
+      remote_src: yes
+    when: hostvars[inventory_hostname].vars.type == "DVRS"
+# Initial Update of RID list
+#  - name: Update RID List
+#    ansible.builtin.shell: bash /opt/centrunk/client_acl/update.sh
+
+# start centrunk service
+- name: Enable Centrunk CCM Service(s)
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+  - name: Establish Log Directory
+    ansible.builtin.file:
+      path: /var/log/centrunk
+      state: directory
+      mode: '0755'
+  - name: Enable Service (VOC)
+    ansible.builtin.systemd:
+      name: centrunk.voc.service
+      enabled: yes
+      masked: no
+      daemon_reload: yes
+    when: hostvars[inventory_hostname].vars.type == "VOC"
+  - name: Enable Service (COMBO)
+    ansible.builtin.systemd:
+      name: centrunk.vc.service
+      enabled: yes
+      masked: no
+      daemon_reload: yes
+    ansible.builtin.systemd:
+      name: centrunk.cc.service
+      enabled: yes
+      masked: no
+      daemon_reload: yes
+    when: hostvars[inventory_hostname].vars.type == "COMBO"
+  - name: Enable Service (VC)
+    ansible.builtin.systemd:
+      name: centrunk.vc.service
+      enabled: yes
+      masked: no
+      daemon_reload: yes
+    when: hostvars[inventory_hostname].vars.type == "VC"
+  - name: Enable Service (CC)
+    ansible.builtin.systemd:
+      name: centrunk.cc.service
+      enabled: yes
+      masked: no
+      daemon_reload: yes
+    when: hostvars[inventory_hostname].vars.type == "CC"
+  - name: Enable Service (DVRS)
+    ansible.builtin.systemd:
+      name: centrunk.dvrs.service
+      enabled: yes
+      masked: no
+      daemon_reload: yes
+    when: hostvars[inventory_hostname].vars.type == "DVRS"
+  - name: Enable Service (CONV)
+    ansible.builtin.systemd:
+      name: centrunk.conv.service
+      enabled: yes
+      masked: no
+      daemon_reload: yes
+    when: hostvars[inventory_hostname].vars.type == "CONV"
