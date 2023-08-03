@@ -67,7 +67,6 @@
           - unzip
           - inotify-tools
           - libncurses-dev
-          - npm
     # download and install dvmhost
     - name: Get DVMHost Code
       ansible.builtin.git:
@@ -192,7 +191,16 @@
         month: "*"
         weekday: "*"
         job: 'sudo /bin/bash /opt/centrunk/client_acl/update.sh'
-
+    - name: Create Cron jobs for Site Update
+      ansible.builtin.cron:
+        name: "dvmupdate"
+        state: present
+        minute: "0"
+        hour: "3"
+        day: "*"
+        month: "*"
+        weekday: "5"
+        job: 'sudo /bin/bash /opt/centrunk/tools/updatedvmhost.sh'
 - name: Detect configuration and apply proper configuration files.
   hosts: all
   become: yes
