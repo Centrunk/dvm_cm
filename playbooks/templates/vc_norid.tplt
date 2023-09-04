@@ -8,7 +8,7 @@ log:
 network:
     enable: true
     id: {{ hostvars[inventory_hostname].vars.fne_node_vc }}
-    address: 10.147.17.245
+    address: fne.centrunk.agency
     port: {{ hostvars[inventory_hostname].vars.fne_port }}
     jitter: 360
     password: "Centrunk!"
