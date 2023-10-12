@@ -58,6 +58,7 @@
 # install python3, python3-pip, and git
     - name: Install Centrunk Dependencies
       ansible.builtin.apt:
+        update_cache: true
         pkg:
           - stm32flash
           - python3
@@ -208,7 +209,7 @@
   tasks:
     - name: Generate VOC config file.
       ansible.builtin.template:
-        src: voc.tplt
+        src: voc_norid.tplt
         dest: /opt/centrunk/configs/configVOC1.yml
         owner: root
         group: root
@@ -216,7 +217,7 @@
       when: hostvars[inventory_hostname].vars.type == "VOC"
     - name: Generate TRS config files (COMBO).
       ansible.builtin.template:
-        src: cc.tplt
+        src: cc_norid.tplt
         dest: /opt/centrunk/configs/configCC1.yml
         owner: root
         group: root
@@ -224,7 +225,7 @@
       when: hostvars[inventory_hostname].vars.type == "COMBO"
     - name: Generate TRS config files (COMBO).
       ansible.builtin.template:
-        src: vc.tplt
+        src: vc_norid.tplt
         dest: /opt/centrunk/configs/configVC1.yml
         owner: root
         group: root
@@ -232,7 +233,7 @@
       when: hostvars[inventory_hostname].vars.type == "COMBO"
     - name: Generate TRS config files (CC).
       ansible.builtin.template:
-        src: cc.tplt
+        src: cc_norid.tplt
         dest: /opt/centrunk/configs/configCC1.yml
         owner: root
         group: root
@@ -240,7 +241,7 @@
       when: hostvars[inventory_hostname].vars.type == "CC"
     - name: Generate TRS config files (VC).
       ansible.builtin.template:
-        src: vc.tplt
+        src: vc_norid.tplt
         dest: /opt/centrunk/configs/configVC1.yml
         owner: root
         group: root
@@ -248,7 +249,7 @@
       when: hostvars[inventory_hostname].vars.type == "VC"
     - name: Generate TRS config files (CONV).
       ansible.builtin.template:
-        src: conv.tplt
+        src: conv_norid.tplt
         dest: /opt/centrunk/configs/configCONV1.yml
         owner: root
         group: root
@@ -256,7 +257,7 @@
       when: hostvars[inventory_hostname].vars.type == "CONV"
     - name: Generate TRS config files (DVRS).
       ansible.builtin.template:
-        src: dvrs.tplt
+        src: dvrs_norid.tplt
         dest: /opt/centrunk/configs/configDVRS1.yml
         owner: root
         group: root
@@ -337,8 +338,8 @@
       remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "DVRS"
 # Initial Update of RID list
-  - name: Update RID List
-    ansible.builtin.shell: bash /opt/centrunk/client_acl/update.sh
+#  - name: Update RID List
+#    ansible.builtin.shell: bash /opt/centrunk/client_acl/update.sh
 
 # start centrunk service
 - name: Enable Centrunk CCM Service(s)
