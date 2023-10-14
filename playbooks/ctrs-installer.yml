@@ -55,7 +55,7 @@
         path: /opt/centrunk/tools
         state: directory
         mode: '0755'
-# install python3, python3-pip, and git
+    # install dependancies
     - name: Install Centrunk Dependencies
       ansible.builtin.apt:
         update_cache: true
