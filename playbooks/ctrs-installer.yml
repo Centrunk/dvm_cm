@@ -55,20 +55,8 @@
         path: /opt/centrunk/tools
         state: directory
         mode: '0755'
-# install python3, python3-pip, and git
-    - name: Install Centrunk Dependencies
-      ansible.builtin.apt:
-        update_cache: true
-        pkg:
-          - stm32flash
-          - python3
-          - python3-pip
-          - git
-          - wget
-          - unzip
-          - inotify-tools
-          - libncurses-dev
-    # download and install dvmhost
+
+    # download and install dvmhost !!!MAKE THIS USE WGET INSTEAD!!!
     - name: Get DVMHost Code
       ansible.builtin.git:
         repo: https://github.com/DVMProject/dvmhost.git
