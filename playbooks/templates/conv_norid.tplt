@@ -92,6 +92,7 @@ system:
         nac: {{ hostvars[inventory_hostname].vars.nac }}
         ran: 1
         pSuperGroup: {{ hostvars[inventory_hostname].vars.super_group }}
+        announcementGroup: {{ hostvars[inventory_hostname].vars.announcement_group }}
         netId: {{ hostvars[inventory_hostname].vars.wacn }}
         sysId: {{ hostvars[inventory_hostname].vars.sys }}
         rfssId: {{ hostvars[inventory_hostname].vars.rfss }}
