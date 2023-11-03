@@ -18,6 +18,7 @@ ctrs:
             site: B
             nac: 13B
             super_group: 911
+            announcement_group: 911
             wacn: dee00
             sys: 13B
             modem_port_cc: /dev/ttyAMA0
