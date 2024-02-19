@@ -68,6 +68,9 @@
           - unzip
           - inotify-tools
           - libncurses-dev
+          - openssl
+          - libssl1.1
+          - libssl-dev
     # download and install dvmhost
     - name: Get DVMHost Code
       ansible.builtin.git:
