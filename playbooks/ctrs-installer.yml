@@ -184,27 +184,28 @@
       when: ansible_architecture is search("aarch64")
     - name: Install node packages
       ansible.builtin.shell: bash /opt/centrunk/client_acl/node.sh
-    ### 
-    # - name: Create Cron job for RID update
-    #   ansible.builtin.cron:
-    #     name: "ridupdate"
-    #     state: present
-    #     minute: "0"
-    #     hour: "*/12"
-    #     day: "*"
-    #     month: "*"
-    #     weekday: "*"
-    #     job: 'sudo /bin/bash /opt/centrunk/client_acl/update.sh'
-    # - name: Create Cron jobs for Site Update
-    #   ansible.builtin.cron:
-    #     name: "dvmupdate"
-    #     state: present
-    #     minute: "0"
-    #     hour: "3"
-    #     day: "*"
-    #     month: "*"
-    #     weekday: "5"
-    #     job: 'sudo /bin/bash /opt/centrunk/tools/updatedvmhost.sh'
+    ## 
+    - name: Remove Cron job for RID update
+      ansible.builtin.cron:
+        name: "ridupdate"
+        state: absent
+        minute: "0"
+        hour: "*/12"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        job: 'sudo /bin/bash /opt/centrunk/client_acl/update.sh'
+    - name: Remove Cron jobs for Site Update
+      ansible.builtin.cron:
+        name: "dvmupdate"
+        state: absent
+        minute: "0"
+        hour: "3"
+        day: "*"
+        month: "*"
+        weekday: "5"
+        job: 'sudo /bin/bash /opt/centrunk/tools/updatedvmhost.sh'
+
 - name: Detect configuration and apply proper configuration files.
   hosts: all
   become: yes
