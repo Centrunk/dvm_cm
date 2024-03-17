@@ -2,35 +2,6 @@ ctrs:
     hosts:
         10.0.0.1:
           vars:
-            type: VOC
-            fne_node_cc: 12002
-            fne_port: 63030
-            fne_identity_cc: 1-B VOC
-            cc_rest_address: 127.0.0.1
-            cc_rest_port: 9990
-            vc_rest_address: 127.0.0.1
-            vc_rest_port: 9991
-            rest_password: "ChangeMe"
-            iden_channel: 3
-            control_channel: 120
-            voice_channel: 120
-            rfss: 1
-            site: B
-            nac: 13B
-            super_group: 911
-            announcement_group: 911
-            wacn: dee00
-            sys: 13B
-            modem_port_cc: /dev/ttyAMA0
-            cc_tx_tuning: 0
-            cc_rx_tuning: 0
-            info_lat: 30.299419
-            info_long: -97.691909
-            info_location: "Texas"
-            gmt_offset: -6
-            callsign: WRUP970
-        10.0.0.2:
-          vars:
             type: COMBO
             fne_node_cc: 12001
             fne_node_vc: 12002
