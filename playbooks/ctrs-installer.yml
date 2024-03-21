@@ -43,11 +43,6 @@
         path: /opt/centrunk/configs
         state: directory
         mode: '0755'
-    - name: Establish tools
-      ansible.builtin.file:
-        path: /opt/centrunk/tools
-        state: directory
-        mode: '0755'
 
     # install dependancies
     - name: Install Centrunk Dependencies
@@ -76,22 +71,17 @@
     - name: ARCH
       ansible.builtin.debug:
         var: ansible_architecture
-    - name: Clone Utils file from Git.
-      ansible.builtin.git:
-        repo: https://github.com/Centrunk/dvmhost3.5.git
-        dest: /opt/centrunk/util
-        version: main
-    - name: Patch iden_table
-      ansible.builtin.copy:
-        src: /opt/centrunk/util/table/iden_table.dat
+    - name: Download iden_table
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/Centrunk/dvmhost3.5/main/table/iden_table.dat
         dest: /opt/centrunk/configs/iden_table.dat
         owner: root
         group: root
         mode: '0644'
         remote_src: yes
-    - name: Copy TG ACL
-      ansible.builtin.copy:
-        src: /opt/centrunk/util/table/tg_acl.yml
+    - name: Download TG ACL
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/Centrunk/dvmhost3.5/main/table/tg_acl.yml
         dest: /opt/centrunk/configs/tg_acl.yml
         owner: root
         group: root
@@ -165,8 +155,8 @@
   become_user: root
   tasks:
   - name: Register unit file for system type COMBO (CC).
-    ansible.builtin.copy:
-      src: /opt/centrunk/util/systemd/centrunk.cc.service
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/Centrunk/dvmhost3.5/main/systemd/centrunk.cc.service
       dest: /etc/systemd/system/centrunk.cc.service
       owner: root
       group: root
@@ -174,8 +164,8 @@
       remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "COMBO"
   - name: Register unit file for system type COMBO (VC).
-    ansible.builtin.copy:
-      src: /opt/centrunk/util/systemd/centrunk.vc.service
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/Centrunk/dvmhost3.5/main/systemd/centrunk.vc.service
       dest: /etc/systemd/system/centrunk.vc.service
       owner: root
       group: root
@@ -183,8 +173,8 @@
       remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "COMBO"
   - name: Register unit file for system type CC.
-    ansible.builtin.copy:
-      src: /opt/centrunk/util/systemd/centrunk.cc.service
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/Centrunk/dvmhost3.5/main/systemd/centrunk.cc.service
       dest: /etc/systemd/system/centrunk.cc.service
       owner: root
       group: root
@@ -192,8 +182,8 @@
       remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "CC"
   - name: Register unit file for system type VC.
-    ansible.builtin.copy:
-      src: /opt/centrunk/util/systemd/centrunk.vc.service
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/Centrunk/dvmhost3.5/main/systemd/centrunk.vc.service
       dest: /etc/systemd/system/centrunk.vc.service
       owner: root
       group: root
@@ -201,8 +191,8 @@
       remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "VC"
   - name: Register unit file for system type CONV.
-    ansible.builtin.copy:
-      src: /opt/centrunk/util/systemd/centrunk.conv.service
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/Centrunk/dvmhost3.5/main/systemd/centrunk.conv.service
       dest: /etc/systemd/system/centrunk.conv.service
       owner: root
       group: root
@@ -210,8 +200,8 @@
       remote_src: yes
     when: hostvars[inventory_hostname].vars.type == "CONV"
   - name: Register unit file for system type DVRS.
-    ansible.builtin.copy:
-      src: /opt/centrunk/util/systemd/centrunk.dvrs.service
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/Centrunk/dvmhost3.5/main/systemd/centrunk.dvrs.service
       dest: /etc/systemd/system/centrunk.dvrs.service
       owner: root
       group: root

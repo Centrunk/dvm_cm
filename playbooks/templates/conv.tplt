@@ -84,7 +84,7 @@ system:
             restAddress: {{ hostvars[inventory_hostname].vars.rest_address }}
             restPort: {{ hostvars[inventory_hostname].vars.rest_port }}
             restPassword: "{{ hostvars[inventory_hostname].vars.rest_password }}"
-            notifyEnable: true
+            notifyEnable: false
         voiceChNo:
             - channelNo: {{ hostvars[inventory_hostname].vars.voice_channel }}
               restAddress: {{ hostvars[inventory_hostname].vars.rest_address }}
