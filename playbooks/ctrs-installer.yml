@@ -58,7 +58,6 @@
           - inotify-tools
           - libncurses-dev
           - openssl
-          - libssl1.1
           - libssl-dev
           - libasio-dev
 
