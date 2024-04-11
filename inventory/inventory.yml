@@ -17,8 +17,8 @@ ctrs:
             rfss: 1
             site: B
             nac: 13B
-            super_group: 32
-            announcement_group: 911
+            super_group: 911
+            announcement_group: 32
             wacn: dee00
             sys: 13B
             modem_port_cc: /dev/ttyAMA0
