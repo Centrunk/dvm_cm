@@ -2,21 +2,19 @@ daemon: true
 log:
     displayLevel: 1
     fileLevel: 1
-    useSyslog: false
     filePath: /var/log/centrunk
     activityFilePath: /var/log/centrunk
     fileRoot: DVM-CONV1
 network:
     enable: true
     id: {{ hostvars[inventory_hostname].vars.fne_node }}
-    address: 100.76.121.128
-    port: 63030
+    address: fne.centrunk.agency
+    port: {{ hostvars[inventory_hostname].vars.fne_port }}
     jitter: 360
     password: "Centrunk!"
     slot1: true
     slot2: true
     updateLookups: true
-    saveLookups: true
     allowActivityTransfer: true
     allowDiagnosticTransfer: true
     debug: false
@@ -26,47 +24,32 @@ network:
     restPassword: "{{ hostvars[inventory_hostname].vars.rest_password }}"
     restDebug: false
 protocols:
-    p25:
+    dmr:
         enable: true
-        tduPreambleCount: 6
-        control:
+        beacons:
             enable: false
-            ackRequests: false
+            interval: 60
+            duration: 3
+        control:
             dedicated: false
-            broadcast: false
-            interval: 300
-            duration: 1
-            disableTSDUMBF: false
-            enableTimeDateAnn: false
-            disableGrantSourceIdCheck: false
-            redundantImmediate: false
-            redundantGrantTransmit: false
-        disableNetworkGrant: false
-        controlOnly: false
-        convNetGrantDemand: true
-        disableCompositeFlag: false
-        inhibitUnauthorized: false
-        legacyGroupGrnt: true
-        legacyGroupReg: false
-        verifyAff: false
-        verifyReg: false
+            enable: false
+            slot: 1
+            disabbleGrantSourceIdCheck: false
+        embeddedLCOnly: false
+        dumpTAData: true
         dumpDataPacket: false
-        repeatDataPacket: false
-        dumpTsbkData: false
+        repeatDataPacket: true
+        dumpCsbkData: false
+        verifyReg: false
+        nRandWait: 8
+        backOff: 1
         callHang: 5
-        noStatusAck: false
-        noMessageAck: true
-        unitToUnitAvailCheck: true
-        localEmergAlarm: false
-        sndcpGrant: false
-        silenceThreshold: 124
-        disableNetworkHDU: false
-        emergDisabled: true
-        queueSize: 12
+        txHang: 8
+        silenceThreshold: 21
+        frameLossThreshold: 2
+        queueSize: 31
         verbose: true
         debug: false
-        allowExplicitSourceId: true
-        frameLossThreshold: 6
 system:
     identity: {{ hostvars[inventory_hostname].vars.fne_identity }}
     timeout: 180
@@ -86,26 +69,21 @@ system:
         location: {{ hostvars[inventory_hostname].vars.info_location }}
     config:
         authoritative: true
-        supervisor: true
         channelId: {{ hostvars[inventory_hostname].vars.iden_channel }}
         channelNo: {{ hostvars[inventory_hostname].vars.control_channel }}
         controlCh:
             restAddress: {{ hostvars[inventory_hostname].vars.rest_address }}
             restPort: {{ hostvars[inventory_hostname].vars.rest_port }}
             restPassword: "{{ hostvars[inventory_hostname].vars.rest_password }}"
-            notifyEnable: false
+            notifyEnable: true
         voiceChNo:
             - channelNo: {{ hostvars[inventory_hostname].vars.voice_channel }}
               restAddress: {{ hostvars[inventory_hostname].vars.rest_address }}
               restPort: {{ hostvars[inventory_hostname].vars.rest_port }}
               restPassword: "{{ hostvars[inventory_hostname].vars.rest_password }}"
-        nac: {{ hostvars[inventory_hostname].vars.nac }}
-        ran: 1
-        pSuperGroup: {{ hostvars[inventory_hostname].vars.super_group }}
+        colorCode: {{ hostvars[inventory_hostname].vars.colorCode }}
         announcementGroup: {{ hostvars[inventory_hostname].vars.announcement_group }}
-        netId: {{ hostvars[inventory_hostname].vars.wacn }}
-        sysId: {{ hostvars[inventory_hostname].vars.sys }}
-        rfssId: {{ hostvars[inventory_hostname].vars.rfss }}
+        dmrNetId: {{ hostvars[inventory_hostname].vars.dmr_net_id}}
         siteId: {{ hostvars[inventory_hostname].vars.site }}
     modem:
         protocol:
@@ -118,16 +96,16 @@ system:
         pttInvert: false
         dcBlocker: true
         cosLockout: false
-        fdmaPreamble: 80
+        fdmaPreamble: 170
         p25CorrCount: 8
-        p25FifoLength: 522
+        p25FifoLength: 442
         hotspot:
             p25DiscBWAdj: 0
             p25PostBWAdj: 0
-            adfGainMode: 2
-            afcEnable: true
-            afcKI: 13
-            afcKP: 5
+            adfGainMode: 0
+            afcEnable: false
+            afcKI: 11
+            afcKP: 4
             afcRange: 1
             txTuning: {{ hostvars[inventory_hostname].vars.tx_tuning }}
             rxTuning: {{ hostvars[inventory_hostname].vars.rx_tuning }}
